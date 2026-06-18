@@ -169,8 +169,8 @@ function initMap(){
 async function loadData(){
   try{
     const [ptRes, zRes] = await Promise.all([
-      fetch('data/puntos.json'),
-      fetch('data/zonas.json')
+      fetch('puntos.json'),
+      fetch('zonas.json')
     ]);
     if(!ptRes.ok) throw new Error('puntos.json no encontrado');
     const pts  = await ptRes.json();
