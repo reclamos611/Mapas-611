@@ -93,6 +93,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 .day-indicator{position:absolute;top:10px;left:10px;z-index:500;background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:12px;color:var(--text2)}
 .day-indicator span{color:var(--accent);font-weight:600}
+
+/* LOCATION */
+#loc-btn{background:rgba(45,206,137,.12);border:1px solid rgba(45,206,137,.35);color:var(--success);padding:5px 11px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:500;white-space:nowrap;transition:all .15s}
+#loc-btn:hover{background:rgba(45,206,137,.22)}
+#loc-btn.locating{animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* LOCATION CARD */
+#loc-card{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;z-index:2000;min-width:280px;max-width:340px;box-shadow:0 8px 32px rgba(0,0,0,.4);display:none}
+#loc-card.show{display:block}
+#loc-card .lc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+#loc-card .lc-title{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+#loc-card .lc-close{background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;padding:0;line-height:1}
+#loc-card .lc-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:5px}
+#loc-card .lc-label{color:var(--text2)}
+#loc-card .lc-value{font-weight:600;color:var(--text)}
+#loc-card .lc-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;color:#fff;margin:8px 0 10px}
+#loc-card .lc-warn{color:var(--warn);font-size:12px;margin-bottom:8px}
+#loc-card .lc-coords{font-size:10px;color:var(--text2);font-family:monospace;margin-bottom:10px}
+#loc-card .lc-actions{display:flex;gap:8px}
+#loc-card .lc-actions button{flex:1;padding:8px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:opacity .15s}
+#loc-card .lc-actions button:hover{opacity:.85}
+.btn-wapp{background:#25D366;color:#fff}
+.btn-center{background:var(--surface2);color:var(--text);border:1px solid var(--border)!important;border:none}
+
 </style>
 </head>
 <body>
@@ -110,6 +135,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="sep"></div>
 
   <button id="today-btn">Hoy</button>
+  <button id="loc-btn">📍 Mi ubicación</button>
 
   <div id="day-filter">
     <button class="day-btn active" data-day="all">Todos</button>
@@ -147,6 +173,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div id="toast"></div>
 <div id="loading"><div class="spinner"></div><p>Cargando territorios...</p></div>
 
+<!-- LOCATION CARD -->
+<div id="loc-card">
+  <div class="lc-head">
+    <div class="lc-title">📍 Tu ubicación actual</div>
+    <button class="lc-close" id="loc-card-close">✕</button>
+  </div>
+  <div id="lc-body"></div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
 <script>
@@ -167,6 +202,7 @@ function initMap(){
 
 // ── LOAD DATA ─────────────────────────────────────────────────────────────────
 async function loadData(){
+  return new Promise(async (resolve)=>{
   try{
     const [ptRes, zRes] = await Promise.all([
       fetch('puntos.json'),
@@ -179,8 +215,11 @@ async function loadData(){
   }catch(e){
     document.getElementById('loading').style.display='none';
     document.getElementById('no-data').querySelector('p').textContent='Error cargando datos: '+e.message;
+    resolve();
     showToast('Error: '+e.message, false);
+    resolve();
   }
+  });
 }
 
 function processData(pts, zns){
@@ -212,6 +251,7 @@ function processData(pts, zns){
   }
   document.getElementById('loading').style.display='none';
   document.getElementById('no-data').style.display='none';
+  resolve();
   document.getElementById('day-indicator').style.display='block';
 }
 
@@ -508,9 +548,124 @@ function showToast(msg,ok=true){
   clearTimeout(tt);tt=setTimeout(()=>el.className='',3000);
 }
 
+
+// ── GEOLOCATION ───────────────────────────────────────────────────────────────
+let locMarker=null, locWatchId=null;
+
+document.getElementById('loc-btn').onclick=requestLocation;
+document.getElementById('loc-card-close').onclick=()=>{
+  document.getElementById('loc-card').classList.remove('show');
+  if(locWatchId){navigator.geolocation.clearWatch(locWatchId);locWatchId=null;}
+  if(locMarker){map.removeLayer(locMarker);locMarker=null;}
+  document.getElementById('loc-btn').textContent='📍 Mi ubicación';
+  document.getElementById('loc-btn').classList.remove('locating');
+};
+
+function requestLocation(){
+  if(!navigator.geolocation){showToast('Tu navegador no soporta geolocalización',false);return;}
+  const btn=document.getElementById('loc-btn');
+  btn.textContent='📍 Localizando...';
+  btn.classList.add('locating');
+  navigator.geolocation.getCurrentPosition(onLocation, onLocError, {enableHighAccuracy:true,timeout:15000});
+}
+
+function onLocError(e){
+  const btn=document.getElementById('loc-btn');
+  btn.textContent='📍 Mi ubicación';
+  btn.classList.remove('locating');
+  const msgs={1:'Permiso de ubicación denegado',2:'Ubicación no disponible',3:'Tiempo de espera agotado'};
+  showToast(msgs[e.code]||'Error de ubicación',false);
+}
+
+function onLocation(pos){
+  const lat=pos.coords.latitude, lng=pos.coords.longitude;
+  const acc=Math.round(pos.coords.accuracy);
+
+  const btn=document.getElementById('loc-btn');
+  btn.textContent='📍 Ubicado';
+  btn.classList.remove('locating');
+
+  // Marker pulsante
+  if(locMarker) map.removeLayer(locMarker);
+  const icon=L.divIcon({className:'',
+    html:`<div style="position:relative;width:16px;height:16px">
+      <div style="position:absolute;inset:0;border-radius:50%;background:var(--success);opacity:.3;animation:pulse 1.5s infinite"></div>
+      <div style="position:absolute;inset:3px;border-radius:50%;background:var(--success);border:2px solid #fff;box-shadow:0 0 6px rgba(45,206,137,.6)"></div>
+    </div>`,
+    iconSize:[16,16],iconAnchor:[8,8]});
+  locMarker=L.marker([lat,lng],{icon,zIndexOffset:1000}).addTo(map);
+  map.setView([lat,lng],16);
+
+  // Find zone or nearest
+  const zone=findZone(lat,lng);
+  const v=zone&&zone.vendedor_id?vendors[zone.vendedor_id]:null;
+  const nr=!zone?findNearest(lat,lng):null;
+  const color=zone?vendorColors[zone.vendedor_id]||'#4f8ef7':nr?'#fb6340':'#888';
+
+  // Build card content
+  let body='';
+  body+=`<div class="lc-coords">${lat.toFixed(6)}, ${lng.toFixed(6)} · precisión ±${acc}m</div>`;
+
+  if(zone){
+    body+=`<div class="lc-row"><span class="lc-label">Zona</span><span class="lc-value">${zone.nombre||'—'}</span></div>`;
+    body+=`<div class="lc-row"><span class="lc-label">Vendedor</span><span class="lc-value">${zone.vendedor_nombre||'—'}</span></div>`;
+    body+=`<div class="lc-row"><span class="lc-label">Día de visita</span><span class="lc-value">${zone.dia||'—'}</span></div>`;
+    body+=`<span class="lc-badge" style="background:${color}">${zone.dia||'Zona'}</span>`;
+  } else if(nr){
+    body+=`<div class="lc-warn">⚠️ Sin zona definida en esta ubicación</div>`;
+    body+=`<div class="lc-row"><span class="lc-label">Vendedor más cercano</span><span class="lc-value" style="color:#fb6340">${nr.vendedor_nombre}</span></div>`;
+    body+=`<div class="lc-row"><span class="lc-label">Día de visita</span><span class="lc-value">${nr.dia||'—'}</span></div>`;
+    body+=`<div class="lc-row"><span class="lc-label">Distancia</span><span class="lc-value">${nr.distKm} km</span></div>`;
+    body+=`<span class="lc-badge" style="background:#fb6340">Sin zona</span>`;
+  } else {
+    body+=`<div class="lc-warn">Sin zona ni datos de vendedores cargados.</div>`;
+  }
+
+  // WhatsApp share text
+  const dia = zone?zone.dia:nr?nr.dia:'—';
+  const vendedor = zone?zone.vendedor_nombre:nr?nr.vendedor_nombre:'—';
+  const zonaNombre = zone?zone.nombre:'Sin zona definida';
+  const wappText = encodeURIComponent(
+    `📍 *Ubicación actual*
+`+
+    `Zona: ${zonaNombre}
+`+
+    `Vendedor: ${vendedor}
+`+
+    `Día de visita: ${dia}
+`+
+    `Coords: ${lat.toFixed(6)}, ${lng.toFixed(6)}
+`+
+    `Maps: https://maps.google.com/?q=${lat},${lng}`
+  );
+
+  body+=`<div class="lc-actions">
+    <button class="btn-wapp" onclick="window.open('https://wa.me/?text=${wappText}','_blank')">WhatsApp 📤</button>
+    <button class="btn-center" onclick="map.setView([${lat},${lng}],17)">Centrar mapa</button>
+  </div>`;
+
+  document.getElementById('lc-body').innerHTML=body;
+  document.getElementById('loc-card').classList.add('show');
+
+  // Watch for movement
+  if(locWatchId) navigator.geolocation.clearWatch(locWatchId);
+  locWatchId=navigator.geolocation.watchPosition(p=>{
+    if(locMarker) locMarker.setLatLng([p.coords.latitude,p.coords.longitude]);
+  },{enableHighAccuracy:true});
+}
+
+// Auto-request on load after data is ready
+function tryAutoLocation(){
+  if(navigator.geolocation && navigator.permissions){
+    navigator.permissions.query({name:'geolocation'}).then(r=>{
+      if(r.state==='granted') requestLocation();
+    });
+  }
+}
+
 // ── START ─────────────────────────────────────────────────────────────────────
 initMap();
-loadData();
+loadData().then(tryAutoLocation);
 </script>
 </body>
 </html>
