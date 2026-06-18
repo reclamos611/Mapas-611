@@ -365,7 +365,7 @@ function showCoordResult(lat,lng,label){
     ${zone?`<div class="sd-zone">📍 ${zone.nombre||zone.vendedor_nombre}${v?' · '+v.name:''}</div>
             ${zone.dia?`<div class="sd-day">📅 ${zone.dia}</div>`:''}`
     :nearest?`<div class="sd-zone" style="color:#fb6340">⚠️ Sin zona · más cercano: <b>${nearest.vendedor_nombre}</b></div>
-              <div class="sd-day">📅 ${nearest.dias.join(', ')||'—'} · a ${nearest.distKm} km</div>`
+              <div class="sd-day">📅 ${nearest.dia||'—'} · a ${nearest.distKm} km</div>`
     :`<div class="sd-nozone">Sin zona y sin datos cargados</div>`}
   </div>`;
   dr.style.display='block';
@@ -386,7 +386,7 @@ function showCoordResult(lat,lng,label){
         `:nr?`
           <div class="rr" style="color:#fb6340"><span class="rl">⚠️ Sin zona</span></div>
           <div class="rr"><span class="rl">Vendedor más cercano</span><span class="rv" style="color:#fb6340">${nr.vendedor_nombre}</span></div>
-          <div class="rr"><span class="rl">Días de visita</span><span class="rv">${nr.dias.join(', ')||'—'}</span></div>
+          <div class="rr"><span class="rl">Días de visita</span><span class="rv">${nr.dia||'—'}</span></div>
           <div class="rr"><span class="rl">Distancia</span><span class="rv">${nr.distKm} km</span></div>
           <span class="rb" style="background:#fb6340">Zona no definida</span>
         `:`<p class="rno">Sin datos de vendedores cargados.</p>`}
@@ -433,7 +433,7 @@ async function geocode(q){
         ${zone?`<div class="sd-zone">📍 ${zone.nombre||zone.vendedor_nombre}${v?' · '+v.name:''}</div>
                 ${zone.dia?`<div class="sd-day">📅 ${zone.dia}</div>`:''}`
         :nearest?`<div class="sd-zone" style="color:#fb6340">⚠️ Sin zona · más cercano: <b>${nearest.vendedor_nombre}</b></div>
-                <div class="sd-day">📅 ${nearest.dias.join(', ')||'—'} · a ${nearest.distKm} km</div>`
+                <div class="sd-day">📅 ${nearest.dia||'—'} · a ${nearest.distKm} km</div>`
                :`<div class="sd-nozone">Sin zona y sin datos cargados</div>`}
       </div>`;
     }).join('');
@@ -455,7 +455,7 @@ async function geocode(q){
                         `:(()=>{const nr=findNearest(lat,lng);return nr?`
               <div class="rr" style="color:#fb6340"><span class="rl">⚠️ Sin zona</span></div>
               <div class="rr"><span class="rl">Vendedor más cercano</span><span class="rv" style="color:#fb6340">${nr.vendedor_nombre}</span></div>
-              <div class="rr"><span class="rl">Días de visita</span><span class="rv">${nr.dias.join(', ')||'—'}</span></div>
+              <div class="rr"><span class="rl">Días de visita</span><span class="rv">${nr.dia||'—'}</span></div>
               <div class="rr"><span class="rl">Distancia</span><span class="rv">${nr.distKm} km</span></div>
               <span class="rb" style="background:#fb6340">Zona no definida</span>
             `:`<p class="rno">Sin zona y sin datos de vendedores cargados.</p>`})()}
@@ -481,7 +481,6 @@ function findZone(lat,lng){
 
 function findNearest(lat,lng){
   if(!allPoints.length) return null;
-  // filter by current day if active
   const pool = currentDay==='all' ? allPoints : allPoints.filter(p=>!p.dia||p.dia===currentDay);
   if(!pool.length) return null;
   let best=null, bestDist=Infinity;
@@ -491,13 +490,11 @@ function findNearest(lat,lng){
     if(d<bestDist){bestDist=d;best=p;}
   }
   if(!best) return null;
-  // get all days this vendor visits
-  const v=vendors[best.vendedor_id];
-  const days=v?[...v.days].sort():[];
+  // dia del punto más cercano (no todos los días del vendedor)
   return {
     vendedor_id: best.vendedor_id,
     vendedor_nombre: best.vendedor_nombre,
-    dias: days,
+    dia: best.dia||'—',
     distKm: Math.round(Math.sqrt(bestDist)*111*10)/10,
     cliente_cercano: best.cliente_nombre||best.cliente_id
   };
