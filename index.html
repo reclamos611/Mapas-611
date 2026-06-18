@@ -324,17 +324,76 @@ document.getElementById('search-input').onkeydown=e=>{if(e.key==='Enter')doSearc
 document.getElementById('search-btn').onclick=doSearch;
 document.addEventListener('click',e=>{if(!e.target.closest('#search-wrap'))document.getElementById('search-drop').style.display='none'});
 
+function parseCoords(q){
+  // Accept: "-31.4123, -64.1892" or "-31.4123 -64.1892" or "-31.4123,-64.1892"
+  const m=q.match(/^\s*(-?\d+\.\d+)[\s,]+(-?\d+\.\d+)\s*$/);
+  if(!m)return null;
+  const a=+m[1],b=+m[2];
+  // lat range -90..90, lng range -180..180
+  if(a>=-90&&a<=90&&b>=-180&&b<=180)return{lat:a,lng:b};
+  if(b>=-90&&b<=90&&a>=-180&&a<=180)return{lat:b,lng:a};
+  return null;
+}
+
 function doSearch(){
   const q=document.getElementById('search-input').value.trim();
   if(!q){document.getElementById('search-drop').style.display='none';return;}
-  // Client match first
+
+  // 1. Try coords paste first
+  const coords=parseCoords(q);
+  if(coords){showCoordResult(coords.lat,coords.lng,q);return;}
+
+  // 2. Client name/id match
   const matches=allPoints.filter(p=>{
     const s=q.toLowerCase();
     return String(p.cliente_nombre||p.clienteNombre||'').toLowerCase().includes(s)||
            String(p.cliente_id||p.clienteId||'').toLowerCase().includes(s);
   }).slice(0,6);
   if(matches.length){showClientDrop(matches);return;}
+
+  // 3. Address geocode
   geocode(q);
+}
+
+function showCoordResult(lat,lng,label){
+  const dr=document.getElementById('search-drop');
+  const zone=findZone(lat,lng);
+  const v=zone&&zone.vendedor_id?vendors[zone.vendedor_id]:null;
+  const nearest=!zone?findNearest(lat,lng):null;
+  dr.innerHTML=`<div class="sd-item" data-lat="${lat}" data-lng="${lng}" data-name="${label}">
+    <div style="font-size:12px;font-family:monospace">${lat.toFixed(5)}, ${lng.toFixed(5)}</div>
+    ${zone?`<div class="sd-zone">📍 ${zone.nombre||zone.vendedor_nombre}${v?' · '+v.name:''}</div>
+            ${zone.dia?`<div class="sd-day">📅 ${zone.dia}</div>`:''}`
+    :nearest?`<div class="sd-zone" style="color:#fb6340">⚠️ Sin zona · más cercano: <b>${nearest.vendedor_nombre}</b></div>
+              <div class="sd-day">📅 ${nearest.dias.join(', ')||'—'} · a ${nearest.distKm} km</div>`
+    :`<div class="sd-nozone">Sin zona y sin datos cargados</div>`}
+  </div>`;
+  dr.style.display='block';
+  dr.querySelector('.sd-item').onclick=()=>{
+    map.setView([lat,lng],17);
+    const zone2=findZone(lat,lng);
+    const v2=zone2&&zone2.vendedor_id?vendors[zone2.vendedor_id]:null;
+    const color=zone2?vendorColors[zone2.vendedor_id]||'#4f8ef7':'#fb6340';
+    const nr=!zone2?findNearest(lat,lng):null;
+    L.popup().setLatLng([lat,lng]).setContent(`
+      <div class="rpop">
+        <h3 style="font-family:monospace;font-size:12px">${lat.toFixed(5)}, ${lng.toFixed(5)}</h3>
+        ${zone2?`
+          <div class="rr"><span class="rl">Zona</span><span class="rv">${zone2.nombre||'—'}</span></div>
+          <div class="rr"><span class="rl">Vendedor</span><span class="rv">${zone2.vendedor_nombre||'—'}</span></div>
+          <div class="rr"><span class="rl">Día</span><span class="rv">${zone2.dia||'—'}</span></div>
+          <span class="rb" style="background:${color}">${zone2.dia||'Zona'}</span>
+        `:nr?`
+          <div class="rr" style="color:#fb6340"><span class="rl">⚠️ Sin zona</span></div>
+          <div class="rr"><span class="rl">Vendedor más cercano</span><span class="rv" style="color:#fb6340">${nr.vendedor_nombre}</span></div>
+          <div class="rr"><span class="rl">Días de visita</span><span class="rv">${nr.dias.join(', ')||'—'}</span></div>
+          <div class="rr"><span class="rl">Distancia</span><span class="rv">${nr.distKm} km</span></div>
+          <span class="rb" style="background:#fb6340">Zona no definida</span>
+        `:`<p class="rno">Sin datos de vendedores cargados.</p>`}
+      </div>
+    `).openOn(map);
+    dr.style.display='none';
+  };
 }
 
 function showClientDrop(pts){
@@ -368,11 +427,14 @@ async function geocode(q){
       const zone=findZone(lat,lng);
       const v=zone&&zone.vendedor_id?vendors[zone.vendedor_id]:null;
       const label=d.display_name.split(',').slice(0,3).join(', ');
+      const nearest=!zone?findNearest(lat,lng):null;
       return `<div class="sd-item" data-lat="${lat}" data-lng="${lng}" data-name="${label}">
         <div style="font-size:12px">${label}</div>
         ${zone?`<div class="sd-zone">📍 ${zone.nombre||zone.vendedor_nombre}${v?' · '+v.name:''}</div>
                 ${zone.dia?`<div class="sd-day">📅 ${zone.dia}</div>`:''}`
-               :`<div class="sd-nozone">Sin zona asignada</div>`}
+        :nearest?`<div class="sd-zone" style="color:#fb6340">⚠️ Sin zona · más cercano: <b>${nearest.vendedor_nombre}</b></div>
+                <div class="sd-day">📅 ${nearest.dias.join(', ')||'—'} · a ${nearest.distKm} km</div>`
+               :`<div class="sd-nozone">Sin zona y sin datos cargados</div>`}
       </div>`;
     }).join('');
     dr.querySelectorAll('.sd-item').forEach(i=>{
@@ -390,7 +452,13 @@ async function geocode(q){
               <div class="rr"><span class="rl">Vendedor</span><span class="rv">${zone.vendedor_nombre||'—'}</span></div>
               <div class="rr"><span class="rl">Día</span><span class="rv">${zone.dia||'—'}</span></div>
               <span class="rb" style="background:${color}">${zone.dia||'Zona'}</span>
-            `:`<p class="rno">Esta dirección no pertenece a ninguna zona definida.</p>`}
+                        `:(()=>{const nr=findNearest(lat,lng);return nr?`
+              <div class="rr" style="color:#fb6340"><span class="rl">⚠️ Sin zona</span></div>
+              <div class="rr"><span class="rl">Vendedor más cercano</span><span class="rv" style="color:#fb6340">${nr.vendedor_nombre}</span></div>
+              <div class="rr"><span class="rl">Días de visita</span><span class="rv">${nr.dias.join(', ')||'—'}</span></div>
+              <div class="rr"><span class="rl">Distancia</span><span class="rv">${nr.distKm} km</span></div>
+              <span class="rb" style="background:#fb6340">Zona no definida</span>
+            `:`<p class="rno">Sin zona y sin datos de vendedores cargados.</p>`})()}
           </div>
         `).openOn(map);
         dr.style.display='none';
@@ -401,7 +469,6 @@ async function geocode(q){
 
 function findZone(lat,lng){
   const pt=turf.point([lng,lat]);
-  // prefer current day filter
   const ordered=[...zones].sort((a,b)=>{
     if(currentDay==='all') return 0;
     return (a.dia===currentDay?-1:1)-(b.dia===currentDay?-1:1);
@@ -410,6 +477,30 @@ function findZone(lat,lng){
     try{if(turf.booleanPointInPolygon(pt,turf.feature(z.geojson.geometry)))return z;}catch(e){}
   }
   return null;
+}
+
+function findNearest(lat,lng){
+  if(!allPoints.length) return null;
+  // filter by current day if active
+  const pool = currentDay==='all' ? allPoints : allPoints.filter(p=>!p.dia||p.dia===currentDay);
+  if(!pool.length) return null;
+  let best=null, bestDist=Infinity;
+  for(const p of pool){
+    const dlat=p.lat-lat, dlng=p.lng-lng;
+    const d=dlat*dlat+dlng*dlng;
+    if(d<bestDist){bestDist=d;best=p;}
+  }
+  if(!best) return null;
+  // get all days this vendor visits
+  const v=vendors[best.vendedor_id];
+  const days=v?[...v.days].sort():[];
+  return {
+    vendedor_id: best.vendedor_id,
+    vendedor_nombre: best.vendedor_nombre,
+    dias: days,
+    distKm: Math.round(Math.sqrt(bestDist)*111*10)/10,
+    cliente_cercano: best.cliente_nombre||best.cliente_id
+  };
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
