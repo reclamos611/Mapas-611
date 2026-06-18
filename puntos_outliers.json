@@ -1,0 +1,1676 @@
+[
+  {
+    "cliente_id": "1414",
+    "cliente_nombre": "MENDOZA JAVIER JACINTO - (Almacen/Despensa_B)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.35632163,
+    "lng": -63.94656122,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "11047",
+    "cliente_nombre": "GABRIEL FERNANDO ROCCHETTI - (Autoservicio Tradicional_C)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.37956,
+    "lng": -63.37956,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "11046",
+    "cliente_nombre": "GABRIEL FERNANDO ROCCHETTI - (Autoservicio Tradicional_C)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.37957,
+    "lng": -63.37957,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "10890",
+    "cliente_nombre": "JOSE LUIS MARTINEZ - (Almacen/Despensa_C)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.424166,
+    "lng": -64.424166,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "1974",
+    "cliente_nombre": "VECCHIO WILDE - (Almacen/Despensa_B)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.943894,
+    "lng": -64.089998,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "1585",
+    "cliente_nombre": "ARGENTINA PATRICIA ALFARO - (Almacen/Despensa_C)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.964701,
+    "lng": -64.964701,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "1680",
+    "cliente_nombre": "CLAUDIA NOELIA GARCIA - (Almacen/Despensa_A)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.971809,
+    "lng": -64.971809,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "10725",
+    "cliente_nombre": "MARIA DEL VALLE CABRERA - (Kiosco/Maxikiosco_P)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.423145,
+    "lng": -64.423145,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2008",
+    "cliente_nombre": "PETRO 5 S.A. - (Estacion de Servicio - NO OFICIALES_B)",
+    "vendedor_id": "33",
+    "vendedor_nombre": "33",
+    "lat": -30.80937302,
+    "lng": -64.07377423,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2362",
+    "cliente_nombre": "RAMON LUIS GARCIA - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "35",
+    "vendedor_nombre": "35",
+    "lat": -30.721081,
+    "lng": -64.721081,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "10984",
+    "cliente_nombre": "SOL AGUSTINA RAMOS - (Almacen/Despensa_B)",
+    "vendedor_id": "35",
+    "vendedor_nombre": "35",
+    "lat": -30.73064,
+    "lng": -64.73064,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "536",
+    "cliente_nombre": "LIHUA WENG - (Autoservicio Tradicional_B)",
+    "vendedor_id": "35",
+    "vendedor_nombre": "35",
+    "lat": -30.8599879,
+    "lng": -64.5222339,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "10889",
+    "cliente_nombre": "JULIETA XIMENA NIETO - (Kiosco/Maxikiosco_B)",
+    "vendedor_id": "35",
+    "vendedor_nombre": "35",
+    "lat": -30.71796,
+    "lng": -64.71796,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "703",
+    "cliente_nombre": "CLAUDIO DANIEL ROMERA - (Mayoristas_P)",
+    "vendedor_id": "35",
+    "vendedor_nombre": "35",
+    "lat": -30.7345075,
+    "lng": -64.8160867,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "2368",
+    "cliente_nombre": "FABIAN ALEJANDRO VALLEJOS - (Almacen/Despensa_P)",
+    "vendedor_id": "35",
+    "vendedor_nombre": "35",
+    "lat": -30.98225,
+    "lng": -64.98225,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "1316",
+    "cliente_nombre": "EMILCE ANGELITA ALVAREZ - (Fiambreria_C)",
+    "vendedor_id": "32",
+    "vendedor_nombre": "32",
+    "lat": -31.0208139,
+    "lng": -64.1140405,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1807",
+    "cliente_nombre": "FLORES MARA - (Almacen/Despensa_B)",
+    "vendedor_id": "32",
+    "vendedor_nombre": "32",
+    "lat": -31.1326864,
+    "lng": -64.1409578,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1806",
+    "cliente_nombre": "CLAUDIA DANIELA ALDECOA - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "32",
+    "vendedor_nombre": "32",
+    "lat": -31.1329655,
+    "lng": -64.1415199,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1519",
+    "cliente_nombre": "GHIORYI NESTOR - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "32",
+    "vendedor_nombre": "32",
+    "lat": -31.1337732,
+    "lng": -64.1410149,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1843",
+    "cliente_nombre": "ANA BEATRIZ DUARTES - (Autoservicio Tradicional_A)",
+    "vendedor_id": "32",
+    "vendedor_nombre": "32",
+    "lat": -31.1348764,
+    "lng": -64.1407033,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "10881",
+    "cliente_nombre": "EMANUEL PABLO GARCIA - (Kiosco/Maxikiosco_B)",
+    "vendedor_id": "35",
+    "vendedor_nombre": "35",
+    "lat": -31.093084,
+    "lng": -64.093084,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "2773",
+    "cliente_nombre": "GABINO FABRIZIO BARRERA - (Almacen/Despensa_A)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.057133,
+    "lng": -64.292236,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "2234",
+    "cliente_nombre": "LUDUEÑA AYELEN MARIA DE LOS ANGELES - (Instituciones_B)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.27866,
+    "lng": -64.27866,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1902",
+    "cliente_nombre": "VILLA HOWARD S.A. - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.34471944,
+    "lng": -63.94767108,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1918",
+    "cliente_nombre": "LOPEZ ALEJANDRA ELIZABETH - (Almacen/Despensa_B)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.365819,
+    "lng": -64.0603204,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "11231",
+    "cliente_nombre": "EVTO SRL - (Autoservicio Tradicional_P)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.4072278,
+    "lng": -64.1213296,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "11249",
+    "cliente_nombre": "I.O.W.P S.A. - (Temporada_P)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.4193082,
+    "lng": -64.1221589,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1674",
+    "cliente_nombre": "MARCELO LEONARDO GRASSO - (Almacen/Despensa_P)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.2085883,
+    "lng": -64.4645135,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "1393",
+    "cliente_nombre": "LOYOLA DANIELA BELEN - (Carniceria/Granja_B)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.2396956,
+    "lng": -64.4649489,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "545",
+    "cliente_nombre": "NOEMI MABEL SALINAS - (Bar/Restaurant_B)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.4708918,
+    "lng": -64.5248246,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "543",
+    "cliente_nombre": "ZONGFEI WANG - (Autoservicio Tradicional_C)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.0928218,
+    "lng": -64.487241,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "561",
+    "cliente_nombre": "CRUZ FERNANDO - (Instituciones_B)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.12151,
+    "lng": -64.4814867,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "1171",
+    "cliente_nombre": "GRUPO PRP S.A.S. - (Eventos_P)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.4242297,
+    "lng": -64.44942478,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "77",
+    "cliente_nombre": "DIGNANI ENZO - (Almacen/Despensa_B)",
+    "vendedor_id": "37",
+    "vendedor_nombre": "37",
+    "lat": -31.0941716,
+    "lng": -64.4860206,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "6017",
+    "cliente_nombre": "FRANCO CRISTOBAL EXPOSITO - (Instituciones_P)",
+    "vendedor_id": "37",
+    "vendedor_nombre": "37",
+    "lat": -31.240936,
+    "lng": -64.333031,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "11137",
+    "cliente_nombre": "MICAELA DEL CARMEN ZARLENGA - (Kiosco/Maxikiosco_A)",
+    "vendedor_id": "37",
+    "vendedor_nombre": "37",
+    "lat": -31.65094,
+    "lng": -64.65094,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "4231",
+    "cliente_nombre": "PRINS PATRICIA - (Almacen/Despensa_C)",
+    "vendedor_id": "44",
+    "vendedor_nombre": "44",
+    "lat": -31.132156,
+    "lng": -64.427895,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "11070",
+    "cliente_nombre": "CANDELARIA VALENTINA DECHAMPS - (Fiambreria_B)",
+    "vendedor_id": "32",
+    "vendedor_nombre": "32",
+    "lat": -31.167311,
+    "lng": -64.167311,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "6923",
+    "cliente_nombre": "Cintia Moncada - (Almacen/Despensa_C)",
+    "vendedor_id": "42",
+    "vendedor_nombre": "42",
+    "lat": -31.136875,
+    "lng": -64.42115,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "6938",
+    "cliente_nombre": "ALMACEN NATURAL SRL - (Almacen/Despensa_C)",
+    "vendedor_id": "42",
+    "vendedor_nombre": "42",
+    "lat": -31.137003,
+    "lng": -64.421532,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "3431",
+    "cliente_nombre": "MARIELA RODRIGUEZ - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "41",
+    "vendedor_nombre": "41",
+    "lat": -31.137238,
+    "lng": -64.42112,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "3993",
+    "cliente_nombre": "GIMENA MAGALI ARGUELLO - (Almacen/Despensa_C)",
+    "vendedor_id": "43",
+    "vendedor_nombre": "43",
+    "lat": -31.13905,
+    "lng": -64.425545,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "3408",
+    "cliente_nombre": "JUAN JAVIER MAMANI - (Almacen/Despensa_C)",
+    "vendedor_id": "43",
+    "vendedor_nombre": "43",
+    "lat": -31.3469417,
+    "lng": -64.2422156,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "4530",
+    "cliente_nombre": "JOSE MARIA CASAGRANDE - (Almacen/Despensa_C)",
+    "vendedor_id": "45",
+    "vendedor_nombre": "45",
+    "lat": -31.139259,
+    "lng": -64.42627,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "1652",
+    "cliente_nombre": "AYELEN NOELIA CASTRO CONTRERAS - (Almacen/Despensa_C)",
+    "vendedor_id": "32",
+    "vendedor_nombre": "32",
+    "lat": -31.1967963,
+    "lng": -64.2876141,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "2790",
+    "cliente_nombre": "Sergio García - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.156326,
+    "lng": -64.315086,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "3",
+    "cliente_nombre": "SERGIO FABIAN PLAZA - (Kiosco/Maxikiosco_P)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.31109027,
+    "lng": -64.46103422,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "286",
+    "cliente_nombre": "FERRANDO MAURO - (Almacen/Despensa_C)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.36075667,
+    "lng": -64.57839,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "2363",
+    "cliente_nombre": "EVELIN NUÑEZ - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.365115,
+    "lng": -64.5376017,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "96",
+    "cliente_nombre": "VELICHE NATALIA 62 - (Kiosco/Maxikiosco_A)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.27487324,
+    "lng": -64.4639098,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "6031",
+    "cliente_nombre": "ANA CINCO - (Almacen/Despensa_C)",
+    "vendedor_id": "55",
+    "vendedor_nombre": "55",
+    "lat": -31.23262,
+    "lng": -64.327339,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "5973",
+    "cliente_nombre": "DENARDI GASTON - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "55",
+    "vendedor_nombre": "55",
+    "lat": -31.3035403,
+    "lng": -64.2825708,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "6070",
+    "cliente_nombre": "HECTOR MARTINEZ - (Autoservicio Tradicional_C)",
+    "vendedor_id": "55",
+    "vendedor_nombre": "55",
+    "lat": -31.3823059,
+    "lng": -64.167067,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "10923",
+    "cliente_nombre": "MICAELA MELINA TURANO - (Kiosco/Maxikiosco_A)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.263683,
+    "lng": -64.263683,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "10924",
+    "cliente_nombre": "FRANCO CARNES FRUTAS & VERDURAS S.A.S. - (Autoservicio Tradicional_C)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.352617,
+    "lng": -64.352617,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "7244",
+    "cliente_nombre": "ESTACION DULCE(8-12HS) - (Mayoristas_P)",
+    "vendedor_id": "48",
+    "vendedor_nombre": "48",
+    "lat": -31.255802,
+    "lng": -64.110794,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "10986",
+    "cliente_nombre": "GABRIELA ALEJANDRA BENAVIDEZ - (Almacen/Despensa_B)",
+    "vendedor_id": "34",
+    "vendedor_nombre": "34",
+    "lat": -31.74027356,
+    "lng": -62.89937966,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "7023",
+    "cliente_nombre": "Guía Jesica soledad - (Almacen/Despensa_B)",
+    "vendedor_id": "47",
+    "vendedor_nombre": "47",
+    "lat": -31.3798585,
+    "lng": -64.1664211,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "6861",
+    "cliente_nombre": "LA PLACITA MAXIKIOSCO - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "58",
+    "vendedor_nombre": "58",
+    "lat": -31.291143,
+    "lng": -64.310699,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "5688",
+    "cliente_nombre": "Maria Manuela Figueroa - (Panaderia_C)",
+    "vendedor_id": "58",
+    "vendedor_nombre": "58",
+    "lat": -31.483343,
+    "lng": -64.210258,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "10718",
+    "cliente_nombre": "GRUPO AL CAMPO S.A.S - (Autoservicio Tradicional_P)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.3038742,
+    "lng": -64.2343292,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "6341",
+    "cliente_nombre": "PEDRO SIBILLA - (Estacion de Servicio - NO OFICIALES_C)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.340944,
+    "lng": -64.255028,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "6888",
+    "cliente_nombre": "GLADYS REGINA ELVIRA GUGLIELMETTI - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.300547,
+    "lng": -64.301552,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2896",
+    "cliente_nombre": "MARCOS EZEQUIEL VALDEZ - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.337334,
+    "lng": -64.17617,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2918",
+    "cliente_nombre": "FRANCO GUEVARA - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.361979,
+    "lng": -64.192657,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2932",
+    "cliente_nombre": "Facundo Mamondi - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.363207,
+    "lng": -64.193748,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2672",
+    "cliente_nombre": "ANALIA MOLINA - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.422825,
+    "lng": -64.182274,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "11129",
+    "cliente_nombre": "RICARDO KEDIKIAN - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.4247413,
+    "lng": -64.1778217,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2705",
+    "cliente_nombre": "DAIANA HERRERA - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.495131,
+    "lng": -64.266251,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2692",
+    "cliente_nombre": "HERRERA LORENA - (Almacen/Despensa_B)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.49519,
+    "lng": -64.265984,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "10942",
+    "cliente_nombre": "Dario Martinez - (Almacen/Despensa_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.498295,
+    "lng": -64.2780767,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2706",
+    "cliente_nombre": "Celeste Antonella Carranzan - (Almacen/Despensa_P)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.4983582,
+    "lng": -64.2618701,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2376",
+    "cliente_nombre": "MARÍA MAGDALENA ESPÍNDOLA - (Almacen/Despensa_B)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3125193,
+    "lng": -64.1769717,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2130",
+    "cliente_nombre": "JUAN AUGUSTO ARCE - (Almacen/Despensa_B)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3404497,
+    "lng": -63.99942577,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "1351",
+    "cliente_nombre": "JESSICA BEATRIZ RODRIGUEZ - (Autoservicio Tradicional_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3453983,
+    "lng": -64.0002539,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "1710",
+    "cliente_nombre": "HEREDIA ORNELLA LUJAN - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3491972,
+    "lng": -64.15957,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "1990",
+    "cliente_nombre": "GUTIERREZ WALTER ADRIAN - (Almacen/Despensa_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3539349,
+    "lng": -64.1683597,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "7342",
+    "cliente_nombre": "LEONARDO LEIVA - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "48",
+    "vendedor_nombre": "48",
+    "lat": -31.3151666,
+    "lng": -64.3042803,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "7306",
+    "cliente_nombre": "CRISTIAN VILLARREAL - (Fiambreria_B)",
+    "vendedor_id": "48",
+    "vendedor_nombre": "48",
+    "lat": -31.4481389,
+    "lng": -64.1939482,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "2172",
+    "cliente_nombre": "CARLOS FABIAN MARTINEZ 2 - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3297636,
+    "lng": -64.1759763,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "2582",
+    "cliente_nombre": "MOLINO WAKEBOARD S.A.S. - (Centros de entrenamiento/Espacios Deportivos_B)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.35311962,
+    "lng": -64.075778,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "2073",
+    "cliente_nombre": "MARIA VICTORIA OLIVERA - (Estacion de Servicio - NO OFICIALES_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3968692,
+    "lng": -64.123605,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "2566",
+    "cliente_nombre": "NUEVO POETA SAS - (Autoservicio Tradicional_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3708071,
+    "lng": -64.0601251,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "11313",
+    "cliente_nombre": "ARMACADA S.A.S. - (Almacen/Despensa_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": 31.34125,
+    "lng": 64.269657,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "11312",
+    "cliente_nombre": "IAN NIELSEN - (Vinoteca_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": 31.347422,
+    "lng": 64.26875,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "4541",
+    "cliente_nombre": "JOSE RODRIGUEZ - (Fiambreria_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.395693,
+    "lng": -64.255684,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "2010",
+    "cliente_nombre": "RODRIGUEZ HECTOR NAZARENO - (Almacen/Despensa_B)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3576382,
+    "lng": -64.1660777,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "2147",
+    "cliente_nombre": "DEPETRI SILVIO CESAR - (Almacen/Despensa_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.3736504,
+    "lng": -64.0531252,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "6319",
+    "cliente_nombre": "MERCADO UNIVERSO S.A.S - (Almacen/Despensa_B)",
+    "vendedor_id": "43",
+    "vendedor_nombre": "43",
+    "lat": -31.458483,
+    "lng": -64.309639,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "7271",
+    "cliente_nombre": "RODRÍGUEZ JOSE - (Almacen/Despensa_B)",
+    "vendedor_id": "48",
+    "vendedor_nombre": "48",
+    "lat": -31.4479174,
+    "lng": -64.1892316,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "887",
+    "cliente_nombre": "GALLI JOGA S.R.L - (Autoservicio Tradicional_C)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.3603834,
+    "lng": -64.578445,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "1554",
+    "cliente_nombre": "MARIANELA CARESTIA - (Vinoteca_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.4656721,
+    "lng": -64.4267548,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "1016",
+    "cliente_nombre": "GIDA S.A.S. - (Autoservicio Tradicional_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.4659178,
+    "lng": -64.4268789,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "6165",
+    "cliente_nombre": "LORENA SOLEDAD FERREYRA - (Almacen/Despensa_P)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.3696758,
+    "lng": -64.1654302,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "6154",
+    "cliente_nombre": "Zavalla Hugo Alberto - (Almacen/Despensa_A)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.3697291,
+    "lng": -64.1654271,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "11269",
+    "cliente_nombre": "HU QUIXIANG - (Autoservicio Tradicional_A)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": 31.374892,
+    "lng": 64.14217,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "11285",
+    "cliente_nombre": "Murcillo Luciana - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.375784,
+    "lng": 64.131746,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "11264",
+    "cliente_nombre": "FERNANDO SANCHEZ - (Supermercado Chico_C)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": 31.375846,
+    "lng": 64.131047,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "6106",
+    "cliente_nombre": "BRENDA AMARANTO - (Almacen/Despensa_P)",
+    "vendedor_id": "46",
+    "vendedor_nombre": "46",
+    "lat": -31.400057,
+    "lng": -64.1798006,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "3711",
+    "cliente_nombre": "GEORGINA MACARENA GOMEZ - (Kiosco/Maxikiosco_B)",
+    "vendedor_id": "47",
+    "vendedor_nombre": "47",
+    "lat": -31.407675,
+    "lng": -64.225563,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "3755",
+    "cliente_nombre": "CLAUDIA NADAL - (Almacen/Despensa_C)",
+    "vendedor_id": "47",
+    "vendedor_nombre": "47",
+    "lat": -31.408611,
+    "lng": -64.212952,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "6982",
+    "cliente_nombre": "LORENA ORELLANA - (Almacen/Despensa_C)",
+    "vendedor_id": "42",
+    "vendedor_nombre": "42",
+    "lat": -31.372252,
+    "lng": -64.153648,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "3788",
+    "cliente_nombre": "ANALIA GARAY - (Almacen/Despensa_C)",
+    "vendedor_id": "42",
+    "vendedor_nombre": "42",
+    "lat": -31.410488,
+    "lng": -64.163132,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "1655",
+    "cliente_nombre": "FABRICIO GABRIEL FLAMENCO - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "31",
+    "vendedor_nombre": "31",
+    "lat": -31.376736,
+    "lng": -64.0537659,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "3374",
+    "cliente_nombre": "KEP SAS - (Almacen/Despensa_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.392546,
+    "lng": -64.248825,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "11294",
+    "cliente_nombre": "VANESA SOLEDAD FUNES - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": 31.399503,
+    "lng": 64.226869,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "5481",
+    "cliente_nombre": "GIORDANO TORRES VALENTINO AGUSTIN - (Resto de Tradicionales_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.406027,
+    "lng": -64.194572,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "10985",
+    "cliente_nombre": "Carlos Rubén Ferreyra - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.41737,
+    "lng": -64.19339,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "2729",
+    "cliente_nombre": "PANADERÍA YOLANDA - (Almacen/Despensa_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.477947,
+    "lng": -64.23439,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "9157",
+    "cliente_nombre": "Daiana Cabrera - (Almacen/Despensa_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.380575,
+    "lng": -64.214493,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "5518",
+    "cliente_nombre": "Cabrera Johana - (Almacen/Despensa_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.388304,
+    "lng": -64.224724,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "5581",
+    "cliente_nombre": "Nugent Mauricio Eduardo - (Almacen/Despensa_C)",
+    "vendedor_id": "54",
+    "vendedor_nombre": "54",
+    "lat": -31.4237532,
+    "lng": -64.1992065,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "6677",
+    "cliente_nombre": "LUCAS CRESPO - (Almacen/Despensa_C)",
+    "vendedor_id": "57",
+    "vendedor_nombre": "57",
+    "lat": -31.4243227,
+    "lng": -64.190592,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "7501",
+    "cliente_nombre": "ALLENDE VERONICA - (Almacen/Despensa_B)",
+    "vendedor_id": "57",
+    "vendedor_nombre": "57",
+    "lat": -31.4633145,
+    "lng": -64.1171886,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "3715",
+    "cliente_nombre": "HENRY MEDINA - (Kiosco/Maxikiosco_B)",
+    "vendedor_id": "53",
+    "vendedor_nombre": "53",
+    "lat": -31.408487,
+    "lng": -64.219093,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "4760",
+    "cliente_nombre": "CHECA EMILIANO - (Almacen/Despensa_A)",
+    "vendedor_id": "53",
+    "vendedor_nombre": "53",
+    "lat": -31.412968,
+    "lng": -64.22551,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "371",
+    "cliente_nombre": "CABALANGO RISAS DE ORO S.A.S. - (Almacen/Despensa_C)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.3866497,
+    "lng": -64.5630667,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "813",
+    "cliente_nombre": "CELIA ANAHI LOPEZ - (Almacen/Despensa_B)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.3895099,
+    "lng": -64.5602367,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1672",
+    "cliente_nombre": "CAROLINA LLOPIS - (Almacen/Despensa_B)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.3899359,
+    "lng": -64.560474,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1651",
+    "cliente_nombre": "MICKAELA SOFIA CARBALLO - (Almacen/Despensa_B)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.3905432,
+    "lng": -64.5600552,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "1650",
+    "cliente_nombre": "TOSSO SARA MALVINA - (Almacen/Despensa_C)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.3961225,
+    "lng": -64.5587039,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "855",
+    "cliente_nombre": "SARSFIELD SILVIA RAQUEL - (Centros de entrenamiento/Espacios Deportivos_B)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.387199,
+    "lng": -64.4603355,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "1164",
+    "cliente_nombre": "GABRIEL JESUS NANI - (Kiosco/Maxikiosco_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.3986755,
+    "lng": -64.4774148,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "121",
+    "cliente_nombre": "Eliana Nani - (Kiosco/Maxikiosco_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.4034869,
+    "lng": -64.470916,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "717",
+    "cliente_nombre": "CARLOS DANIEL DIAZ - (Kiosco/Maxikiosco_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.4300533,
+    "lng": -64.49031,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "225",
+    "cliente_nombre": "1 TEAM S.A.S. - (Estacion de Servicio - NO OFICIALES_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.4373221,
+    "lng": -64.3264737,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "4617",
+    "cliente_nombre": "Cef Distribuciones S.a.s. - (Autoservicio Tradicional_C)",
+    "vendedor_id": "45",
+    "vendedor_nombre": "45",
+    "lat": -31.404774,
+    "lng": -64.183014,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "11263",
+    "cliente_nombre": "ABRIL MANASSERO - (Almacen/Despensa_C)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": 31.393981,
+    "lng": 64.189251,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "6400",
+    "cliente_nombre": "SCARABELLI EMILIANO PABLO - (Fiambreria_B)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.394573,
+    "lng": -64.185028,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "6212",
+    "cliente_nombre": "LONDOÑO AMAYA JORGE - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.419735,
+    "lng": -64.181328,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "165",
+    "cliente_nombre": "EMANUEL ZUAZQUITA - (Almacen/Despensa_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.3946634,
+    "lng": -64.4645747,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "151",
+    "cliente_nombre": "LOGRO S.A.S. - (Estacion de Servicio_P)",
+    "vendedor_id": "36",
+    "vendedor_nombre": "36",
+    "lat": -31.4373095,
+    "lng": -64.3263776,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "11178",
+    "cliente_nombre": "MELINA IRUPE AMATO - (Almacen/Despensa_A)",
+    "vendedor_id": "58",
+    "vendedor_nombre": "58",
+    "lat": -31.394926,
+    "lng": -64.141185,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "3215",
+    "cliente_nombre": "Sibilla Pedro - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "59",
+    "vendedor_nombre": "59",
+    "lat": -31.39551,
+    "lng": -64.111542,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "5168",
+    "cliente_nombre": "Julian lopez - (Almacen/Despensa_C)",
+    "vendedor_id": "59",
+    "vendedor_nombre": "59",
+    "lat": -31.4029868,
+    "lng": -64.2148411,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "5210",
+    "cliente_nombre": "Despensa Erica Loayza - (Almacen/Despensa_C)",
+    "vendedor_id": "59",
+    "vendedor_nombre": "59",
+    "lat": -31.4030491,
+    "lng": -64.214641,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "4799",
+    "cliente_nombre": "ANA CAROLINA MARIA NAPOLITANO - (Almacen/Despensa_C)",
+    "vendedor_id": "59",
+    "vendedor_nombre": "59",
+    "lat": -31.414152,
+    "lng": -64.222237,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "11041",
+    "cliente_nombre": "MARIANA HERRERA - (Temporada_C)",
+    "vendedor_id": "49",
+    "vendedor_nombre": "49",
+    "lat": -31.407129,
+    "lng": -64.407129,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "4594",
+    "cliente_nombre": "Blitz Burgers - (Almacen/Despensa_C)",
+    "vendedor_id": "44",
+    "vendedor_nombre": "44",
+    "lat": -31.399115,
+    "lng": -64.20092,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "4844",
+    "cliente_nombre": "Celi Montenegro - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "49",
+    "vendedor_nombre": "49",
+    "lat": -31.409187,
+    "lng": -64.265923,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "4764",
+    "cliente_nombre": "LUIS MIRANDA Q - (Almacen/Despensa_C)",
+    "vendedor_id": "49",
+    "vendedor_nombre": "49",
+    "lat": -31.413456,
+    "lng": -64.212929,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "7047",
+    "cliente_nombre": "KIOSCO 30 - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.410034,
+    "lng": -64.181953,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "4206",
+    "cliente_nombre": "TOPO CORDOBA SA - (Kiosco/Maxikiosco_P)",
+    "vendedor_id": "44",
+    "vendedor_nombre": "44",
+    "lat": -31.418701,
+    "lng": -64.185295,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "7351",
+    "cliente_nombre": "WALTER DANIEL (9 A 18HS) - (Almacen/Despensa_C)",
+    "vendedor_id": "44",
+    "vendedor_nombre": "44",
+    "lat": 31.423263,
+    "lng": 64.195981,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "2259",
+    "cliente_nombre": "MARIA ALEJANDRA DI STASI - (Instituciones_B)",
+    "vendedor_id": "45",
+    "vendedor_nombre": "45",
+    "lat": -31.43216729,
+    "lng": -64.27485379,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "2823",
+    "cliente_nombre": "ALMACÉN DAVID - (Vinoteca_C)",
+    "vendedor_id": "52",
+    "vendedor_nombre": "52",
+    "lat": -31.482545,
+    "lng": -64.2440733,
+    "dia": "Jueves"
+  },
+  {
+    "cliente_id": "4838",
+    "cliente_nombre": "GONZÁLEZ GERMAN EMANUEL - (Almacen/Despensa_C)",
+    "vendedor_id": "45",
+    "vendedor_nombre": "45",
+    "lat": -31.411469,
+    "lng": -64.262169,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "6254",
+    "cliente_nombre": ":Lo de tati - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": -31.412725,
+    "lng": -64.235085,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "11305",
+    "cliente_nombre": "SILVINA DESSIMOZ - (Almacen/Despensa_C)",
+    "vendedor_id": "56",
+    "vendedor_nombre": "56",
+    "lat": 31.46476,
+    "lng": 64.228872,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "874",
+    "cliente_nombre": "PAOLA BEATRIZ GARCIA - (Almacen/Despensa_C)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.4150105,
+    "lng": -64.508428,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "4501",
+    "cliente_nombre": "WARME S.A.S. - (Almacen/Despensa_P)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.436008,
+    "lng": -64.312317,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "5637",
+    "cliente_nombre": "CARAVANSARIO SA - (Bar/Restaurant_C)",
+    "vendedor_id": "58",
+    "vendedor_nombre": "58",
+    "lat": -31.415741,
+    "lng": -64.187134,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "11317",
+    "cliente_nombre": "MARIA EMILIA RODRIGUEZ - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "44",
+    "vendedor_nombre": "44",
+    "lat": -31.4411963,
+    "lng": -64.2492018,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "4995",
+    "cliente_nombre": "Domínguez Sandra - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "53",
+    "vendedor_nombre": "53",
+    "lat": -31.417473,
+    "lng": -64.199074,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "5020",
+    "cliente_nombre": "BUSTOS SOLEDAD - (Almacen/Despensa_C)",
+    "vendedor_id": "53",
+    "vendedor_nombre": "53",
+    "lat": -31.42189,
+    "lng": -64.201149,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "10408",
+    "cliente_nombre": "IVANA DE LA ROSA - (Almacen/Despensa_C)",
+    "vendedor_id": "46",
+    "vendedor_nombre": "46",
+    "lat": -31.4377033,
+    "lng": -64.1923767,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "6518",
+    "cliente_nombre": "GRISELDA ROJAS - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "46",
+    "vendedor_nombre": "46",
+    "lat": -31.4378359,
+    "lng": -64.1917054,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "6535",
+    "cliente_nombre": "CÁCERES MARÍA FLORENCIA - (Kiosco/Maxikiosco_C)",
+    "vendedor_id": "46",
+    "vendedor_nombre": "46",
+    "lat": -31.4385527,
+    "lng": -64.1909513,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "5081",
+    "cliente_nombre": "Buffet alas - (Almacen/Despensa_C)",
+    "vendedor_id": "53",
+    "vendedor_nombre": "53",
+    "lat": -31.430243,
+    "lng": -64.215126,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "10761",
+    "cliente_nombre": "ROSA PEREYRA - (Autoservicio Tradicional_C)",
+    "vendedor_id": "57",
+    "vendedor_nombre": "57",
+    "lat": -31.4318055,
+    "lng": -64.1968591,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "11096",
+    "cliente_nombre": "SENESTRARI FABRICIO - (Almacen/Despensa_B)",
+    "vendedor_id": "41",
+    "vendedor_nombre": "41",
+    "lat": -31.4744838,
+    "lng": -64.2251965,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "11226",
+    "cliente_nombre": "BRUNO EXEQUIEL BAIGORRIA - (Kiosco/Maxikiosco_B)",
+    "vendedor_id": "41",
+    "vendedor_nombre": "41",
+    "lat": -40.613662873283,
+    "lng": -62.447015878643,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "4372",
+    "cliente_nombre": "DISTRIBUIDORA VERONITA S.R.L - (Autoservicio Tradicional_B)",
+    "vendedor_id": "44",
+    "vendedor_nombre": "44",
+    "lat": -31.480793,
+    "lng": -64.16909,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "4060",
+    "cliente_nombre": "Septiembre Food SRL - (Estacion de Servicio_C)",
+    "vendedor_id": "51",
+    "vendedor_nombre": "51",
+    "lat": -31.449551,
+    "lng": -64.148224,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "1991",
+    "cliente_nombre": "PEDERNERA LUCAS MATIAS - (Almacen/Despensa_C)",
+    "vendedor_id": "51",
+    "vendedor_nombre": "51",
+    "lat": -31.46139234,
+    "lng": -64.10633381,
+    "dia": "Sábado"
+  },
+  {
+    "cliente_id": "11310",
+    "cliente_nombre": "DISTRIBUIDORA VERONITA S.R.L - (Autoservicio Tradicional_C)",
+    "vendedor_id": "47",
+    "vendedor_nombre": "47",
+    "lat": -31.453681,
+    "lng": -64.237664,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "570",
+    "cliente_nombre": "MARISEL ANDREA ALMADA - (Almacen/Despensa_C)",
+    "vendedor_id": "38",
+    "vendedor_nombre": "38",
+    "lat": -31.4657155,
+    "lng": -64.3546362,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "11204",
+    "cliente_nombre": "NIETO OSCAR EZEQUIEL - (Almacen/Despensa_B)",
+    "vendedor_id": "51",
+    "vendedor_nombre": "51",
+    "lat": -31.4591727,
+    "lng": -64.1018198,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "1688",
+    "cliente_nombre": "MARIA JOSE RIOS - (Almacen/Despensa_B)",
+    "vendedor_id": "51",
+    "vendedor_nombre": "51",
+    "lat": -31.4646648,
+    "lng": -64.099213,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "1728",
+    "cliente_nombre": "MARIA EDITH TABORDA - (Kiosco/Maxikiosco_A)",
+    "vendedor_id": "51",
+    "vendedor_nombre": "51",
+    "lat": -31.46495805,
+    "lng": -64.09777713,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "1726",
+    "cliente_nombre": "GONZALO GASTON GONZALEZ - (Kiosco/Maxikiosco_P)",
+    "vendedor_id": "51",
+    "vendedor_nombre": "51",
+    "lat": -31.465024,
+    "lng": -64.09846,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "1462",
+    "cliente_nombre": "MOYNO CARINA ALEJANDRA - (Almacen/Despensa_P)",
+    "vendedor_id": "51",
+    "vendedor_nombre": "51",
+    "lat": -31.4653423,
+    "lng": -64.1001954,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "741",
+    "cliente_nombre": "ALMACEN QUITO S.A.S. - (Almacen/Despensa_P)",
+    "vendedor_id": "37",
+    "vendedor_nombre": "37",
+    "lat": -31.58860703,
+    "lng": -64.45850213,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "643",
+    "cliente_nombre": "YOHANA FERNANDA BENITEZ - (Almacen/Despensa_B)",
+    "vendedor_id": "37",
+    "vendedor_nombre": "37",
+    "lat": -31.6106612,
+    "lng": -64.443437,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "2570",
+    "cliente_nombre": "JESICA SOLEDAD BOSIO - (Almacen/Despensa_A)",
+    "vendedor_id": "37",
+    "vendedor_nombre": "37",
+    "lat": -31.6138994,
+    "lng": -64.442149,
+    "dia": "Viernes"
+  },
+  {
+    "cliente_id": "1261",
+    "cliente_nombre": "Edgardo mencegué - (Almacen/Despensa_B)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -31.95281333,
+    "lng": -64.54629,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "1170",
+    "cliente_nombre": "TERESITA BEATRIZ RIVERO - (Almacen/Despensa_C)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.02574,
+    "lng": -64.55572333,
+    "dia": "Miércoles"
+  },
+  {
+    "cliente_id": "778",
+    "cliente_nombre": "GONZALO TAMARGO - (Eventos_C)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -31.99498814,
+    "lng": -64.55376108,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "724",
+    "cliente_nombre": "RAVALLO GRACIELA BEATRIZ - (Almacen/Despensa_B)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.16546085,
+    "lng": -64.5166614,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "1199",
+    "cliente_nombre": "JONATHAN EMANUEL ROMERO - (Kiosco/Maxikiosco_B)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.166015,
+    "lng": -64.516925,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "719",
+    "cliente_nombre": "ARESE MARCELA DOLLY - (Almacen/Despensa_C)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.174275,
+    "lng": -64.57322333,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "723",
+    "cliente_nombre": "BRUNO GUTIERREZ - (Almacen/Despensa_B)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.18523333,
+    "lng": -64.57310167,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "720",
+    "cliente_nombre": "AUTOSERVICIO JUAN - (Autoservicio Tradicional_C)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.18610053,
+    "lng": -64.56721191,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "906",
+    "cliente_nombre": "RODRIGUEZ MANUEL CAYETANO - (Almacen/Despensa_P)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.18944833,
+    "lng": -64.57169,
+    "dia": "Martes"
+  },
+  {
+    "cliente_id": "1165",
+    "cliente_nombre": "SEVERICH BELEN - (Almacen/Despensa_C)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.05504667,
+    "lng": -64.556505,
+    "dia": "Lunes"
+  },
+  {
+    "cliente_id": "1234",
+    "cliente_nombre": "MARISA BEATRIZ MESTRE - (Almacen/Despensa_C)",
+    "vendedor_id": "39",
+    "vendedor_nombre": "39",
+    "lat": -32.06583686,
+    "lng": -64.55898929,
+    "dia": "Lunes"
+  }
+]
