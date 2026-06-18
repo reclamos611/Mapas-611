@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Territorios de Ventas</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#23273a;--border:#2e3348;
+  --text:#e8eaf6;--text2:#8b92b8;--accent:#4f8ef7;--panel:300px;
+  --success:#2dce89;--danger:#f5365c;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+#topbar{display:flex;align-items:center;gap:10px;padding:0 14px;height:50px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;z-index:1000}
+#topbar h1{font-size:14px;font-weight:600;white-space:nowrap}
+#topbar h1 span{color:var(--accent)}
+.sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
+
+#search-wrap{flex:1;max-width:400px;position:relative}
+#search-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 36px 7px 12px;border-radius:8px;font-size:13px;outline:none;transition:border .15s}
+#search-input:focus{border-color:var(--accent)}
+#search-input::placeholder{color:var(--text2)}
+#search-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text2);cursor:pointer;font-size:15px}
+#search-btn:hover{color:var(--accent)}
+#search-drop{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;z-index:9999;overflow:hidden;display:none;max-height:280px;overflow-y:auto}
+.sd-item{padding:10px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--border)}
+.sd-item:last-child{border-bottom:none}
+.sd-item:hover{background:var(--surface2)}
+.sd-zone{font-size:11px;color:var(--accent);margin-top:2px}
+.sd-day{font-size:11px;color:var(--text2)}
+.sd-nozone{font-size:11px;color:var(--text2);font-style:italic}
+
+#day-filter{display:flex;gap:3px}
+.day-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:5px 9px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.day-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+#today-btn{background:rgba(79,142,247,.15);border:1px solid rgba(79,142,247,.4);color:var(--accent);padding:5px 11px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:500;white-space:nowrap}
+#today-btn:hover{background:rgba(79,142,247,.25)}
+
+#main{display:flex;flex:1;overflow:hidden;position:relative}
+#map{flex:1;z-index:1}
+
+#panel{width:var(--panel);background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+#panel-head{padding:12px 14px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+#panel-head h2{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em}
+#stats{display:flex;gap:6px;margin-top:8px}
+.stat{flex:1;background:var(--surface2);border-radius:7px;padding:7px 8px;text-align:center}
+.stat .sv{font-size:18px;font-weight:700;color:var(--accent)}
+.stat .sl{font-size:10px;color:var(--text2);margin-top:1px}
+
+#panel-scroll{overflow-y:auto;flex:1;padding:6px}
+#panel-scroll::-webkit-scrollbar{width:3px}
+#panel-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.vcard{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-bottom:5px;cursor:pointer;transition:border-color .15s}
+.vcard:hover,.vcard.active{border-color:var(--accent)}
+.vcard .vh{display:flex;align-items:center;gap:7px}
+.vdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.vcard .vn{font-size:13px;font-weight:500;flex:1}
+.vcard .vc{font-size:11px;color:var(--text2);background:var(--border);padding:2px 6px;border-radius:20px}
+.vcard .vtags{display:flex;gap:3px;margin-top:6px;flex-wrap:wrap}
+.vtag{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface);color:var(--text2);border:1px solid var(--border);cursor:pointer;transition:all .15s}
+.vtag:hover,.vtag.on{background:rgba(79,142,247,.15);color:var(--accent);border-color:rgba(79,142,247,.3)}
+
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:9px;font-size:12px;z-index:9999;transition:transform .22s;pointer-events:none;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.ok{border-color:var(--success);color:var(--success)}
+#toast.err{border-color:var(--danger);color:var(--danger)}
+
+/* Result popup */
+.rpop{min-width:200px}
+.rpop h3{font-size:13px;font-weight:600;margin-bottom:7px}
+.rpop .rr{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px}
+.rpop .rl{color:#777}
+.rpop .rv{font-weight:500}
+.rpop .rb{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;color:#fff;margin-top:5px}
+.rpop .rno{font-size:12px;color:#999;font-style:italic}
+
+.leaflet-control-zoom a,.leaflet-bar a{background:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important}
+.leaflet-control-attribution{background:rgba(15,17,23,.7)!important;color:var(--text2)!important}
+.leaflet-popup-content-wrapper{border-radius:10px}
+
+#loading{position:fixed;inset:0;background:rgba(15,17,23,.8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loading p{margin-top:10px;font-size:13px;color:var(--text2)}
+
+#no-data{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;z-index:10;opacity:.5}
+#no-data p{color:var(--text2);font-size:13px;margin-top:8px}
+
+.day-indicator{position:absolute;top:10px;left:10px;z-index:500;background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:12px;color:var(--text2)}
+.day-indicator span{color:var(--accent);font-weight:600}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>Territorios <span>Ventas</span></h1>
+  <div class="sep"></div>
+
+  <div id="search-wrap">
+    <input id="search-input" type="text" placeholder="Buscar cliente o dirección..."/>
+    <button id="search-btn">🔍</button>
+    <div id="search-drop"></div>
+  </div>
+
+  <div class="sep"></div>
+
+  <button id="today-btn">Hoy</button>
+
+  <div id="day-filter">
+    <button class="day-btn active" data-day="all">Todos</button>
+    <button class="day-btn" data-day="Lunes">Lun</button>
+    <button class="day-btn" data-day="Martes">Mar</button>
+    <button class="day-btn" data-day="Miércoles">Mié</button>
+    <button class="day-btn" data-day="Jueves">Jue</button>
+    <button class="day-btn" data-day="Viernes">Vie</button>
+    <button class="day-btn" data-day="Sábado">Sáb</button>
+  </div>
+</div>
+
+<div id="main">
+  <div id="map">
+    <div id="no-data">
+      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <p>Cargando datos...</p>
+    </div>
+    <div class="day-indicator" id="day-indicator" style="display:none">Mostrando: <span id="day-ind-text">Todos</span></div>
+  </div>
+
+  <div id="panel">
+    <div id="panel-head">
+      <h2>Vendedores</h2>
+      <div id="stats">
+        <div class="stat"><div class="sv" id="s-pts">—</div><div class="sl">Clientes</div></div>
+        <div class="stat"><div class="sv" id="s-vend">—</div><div class="sl">Vendedores</div></div>
+        <div class="stat"><div class="sv" id="s-zones">—</div><div class="sl">Zonas</div></div>
+      </div>
+    </div>
+    <div id="panel-scroll"><div id="vendor-list"></div></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="loading"><div class="spinner"></div><p>Cargando territorios...</p></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+<script>
+const DAYS_NUM = {0:'Domingo',1:'Lunes',2:'Martes',3:'Miércoles',4:'Jueves',5:'Viernes',6:'Sábado'};
+
+let allPoints=[], zones=[], vendors={}, vendorColors={}, currentDay='all', activeVendor=null;
+let map, markerLayer, zoneLayer;
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+function initMap(){
+  map = L.map('map',{center:[-34.6037,-58.3816],zoom:11});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19
+  }).addTo(map);
+  zoneLayer  = L.layerGroup().addTo(map);
+  markerLayer= L.layerGroup().addTo(map);
+}
+
+// ── LOAD DATA ─────────────────────────────────────────────────────────────────
+async function loadData(){
+  try{
+    const [ptRes, zRes] = await Promise.all([
+      fetch('data/puntos.json'),
+      fetch('data/zonas.json')
+    ]);
+    if(!ptRes.ok) throw new Error('puntos.json no encontrado');
+    const pts  = await ptRes.json();
+    const zns  = zRes.ok ? await zRes.json() : [];
+    processData(pts, zns);
+  }catch(e){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('no-data').querySelector('p').textContent='Error cargando datos: '+e.message;
+    showToast('Error: '+e.message, false);
+  }
+}
+
+function processData(pts, zns){
+  const colorList=['#4f8ef7','#f7614f','#4fc78e','#c74fa8','#f7c14f','#4fc7c7',
+    '#c7884f','#884fc7','#c74f4f','#4f8fc7','#7dc74f','#c7c74f','#4f4fc7',
+    '#c74f8f','#f78f4f','#4fc7a8','#8f4fc7','#4fc762','#e6a817','#17b8e6'];
+  let ci=0;
+  const vm={};
+  pts.forEach(p=>{
+    const vid=String(p.vendedor_id||p.vendedorId||'').trim();
+    const vn =String(p.vendedor_nombre||p.vendedorNombre||vid).trim();
+    if(!vm[vid]){ vm[vid]={id:vid,name:vn,count:0,days:new Set()}; vendorColors[vid]=colorList[ci++%colorList.length]; }
+    vm[vid].count++;
+    if(p.dia) vm[vid].days.add(p.dia);
+  });
+  vendors=vm; allPoints=pts; zones=zns;
+
+  document.getElementById('s-pts').textContent=pts.length.toLocaleString('es-AR');
+  document.getElementById('s-vend').textContent=Object.keys(vm).length;
+  document.getElementById('s-zones').textContent=zns.length;
+
+  renderZones();
+  renderMarkers(pts);
+  renderVendorList();
+
+  if(pts.length){
+    const lats=pts.map(p=>p.lat), lngs=pts.map(p=>p.lng);
+    map.fitBounds([[Math.min(...lats),Math.min(...lngs)],[Math.max(...lats),Math.max(...lngs)]],{padding:[30,30]});
+  }
+  document.getElementById('loading').style.display='none';
+  document.getElementById('no-data').style.display='none';
+  document.getElementById('day-indicator').style.display='block';
+}
+
+// ── ZONES ─────────────────────────────────────────────────────────────────────
+function renderZones(){
+  zoneLayer.clearLayers();
+  zones.forEach(z=>{
+    if(currentDay!=='all' && z.dia && z.dia!==currentDay) return;
+    if(activeVendor && z.vendedor_id!==activeVendor) return;
+    const color = vendorColors[z.vendedor_id]||'#4f8ef7';
+    try{
+      const layer = L.geoJSON(z.geojson,{
+        style:{color,fillColor:color,weight:2,opacity:.85,fillOpacity:.15,dashArray:currentDay==='all'?'4':''}
+      });
+      layer.bindPopup(`
+        <div class="rpop">
+          <h3>${z.nombre||z.vendedor_nombre}</h3>
+          <div class="rr"><span class="rl">Vendedor</span><span class="rv">${z.vendedor_nombre}</span></div>
+          <div class="rr"><span class="rl">Día</span><span class="rv">${z.dia||'—'}</span></div>
+          <span class="rb" style="background:${color}">${z.dia||'Zona'}</span>
+        </div>
+      `);
+      layer.addTo(zoneLayer);
+    }catch(e){}
+  });
+}
+
+// ── MARKERS ───────────────────────────────────────────────────────────────────
+function renderMarkers(pts){
+  markerLayer.clearLayers();
+  pts.forEach(p=>{
+    if(currentDay!=='all' && p.dia && p.dia!==currentDay) return;
+    if(activeVendor && String(p.vendedor_id||p.vendedorId)!==activeVendor) return;
+    const vid=String(p.vendedor_id||p.vendedorId||'');
+    const color=vendorColors[vid]||'#aaa';
+    const icon=L.divIcon({
+      className:'',
+      html:`<div style="width:7px;height:7px;border-radius:50%;background:${color};border:1.5px solid rgba(255,255,255,.55);box-shadow:0 0 3px ${color}99"></div>`,
+      iconSize:[7,7],iconAnchor:[3.5,3.5]
+    });
+    const m=L.marker([p.lat,p.lng],{icon});
+    const cname=p.cliente_nombre||p.clienteNombre||p.cliente||'';
+    const cid=p.cliente_id||p.clienteId||'';
+    m.bindPopup(`
+      <div style="min-width:160px">
+        <p style="font-weight:600;font-size:13px;margin-bottom:5px">${cname||cid}</p>
+        ${cname&&cid?`<p style="font-size:11px;color:#666">ID: ${cid}</p>`:''}
+        <p style="font-size:12px;margin-top:3px">👤 ${p.vendedor_nombre||p.vendedorNombre||vid}</p>
+        ${p.dia?`<p style="font-size:11px;color:#888;margin-top:2px">📅 ${p.dia}</p>`:''}
+      </div>
+    `,{maxWidth:220});
+    markerLayer.addLayer(m);
+  });
+}
+
+// ── VENDOR LIST ───────────────────────────────────────────────────────────────
+function renderVendorList(){
+  const el=document.getElementById('vendor-list');
+  const sorted=Object.values(vendors).sort((a,b)=>b.count-a.count);
+  el.innerHTML=sorted.map(v=>{
+    const color=vendorColors[v.id]||'#aaa';
+    const days=[...v.days].sort();
+    return `<div class="vcard${activeVendor===v.id?' active':''}" data-vid="${v.id}">
+      <div class="vh">
+        <div class="vdot" style="background:${color}"></div>
+        <div class="vn">${v.name}</div>
+        <div class="vc">${v.count.toLocaleString('es-AR')}</div>
+      </div>
+      ${days.length?`<div class="vtags">${days.map(d=>`<span class="vtag${(currentDay==='all'||d===currentDay)?' on':''}" data-day="${d}">${d}</span>`).join('')}</div>`:''}
+    </div>`;
+  }).join('');
+
+  el.querySelectorAll('.vcard').forEach(c=>{
+    c.onclick=e=>{
+      if(e.target.classList.contains('vtag')) return;
+      const vid=c.dataset.vid;
+      activeVendor=activeVendor===vid?null:vid;
+      renderVendorList(); renderMarkers(allPoints); renderZones();
+    };
+  });
+  el.querySelectorAll('.vtag').forEach(t=>{
+    t.onclick=e=>{ e.stopPropagation(); setDay(t.dataset.day); };
+  });
+}
+
+// ── DAY FILTER ────────────────────────────────────────────────────────────────
+function setDay(day){
+  currentDay=day;
+  document.querySelectorAll('.day-btn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.day===day||(day==='all'&&b.dataset.day==='all'));
+  });
+  document.getElementById('day-ind-text').textContent=day==='all'?'Todos':day;
+  renderMarkers(allPoints); renderZones(); renderVendorList();
+  document.getElementById('s-pts').textContent=
+    (day==='all'?allPoints:allPoints.filter(p=>!p.dia||p.dia===day)).length.toLocaleString('es-AR');
+}
+
+document.getElementById('day-filter').querySelectorAll('.day-btn').forEach(b=>{
+  b.onclick=()=>setDay(b.dataset.day);
+});
+document.getElementById('today-btn').onclick=()=>{
+  const d=DAYS_NUM[new Date().getDay()];
+  if(d) setDay(d); else showToast('Hoy es domingo, sin visitas',false);
+};
+
+// ── SEARCH ────────────────────────────────────────────────────────────────────
+let debounce;
+document.getElementById('search-input').oninput=()=>{clearTimeout(debounce);debounce=setTimeout(doSearch,320)};
+document.getElementById('search-input').onkeydown=e=>{if(e.key==='Enter')doSearch()};
+document.getElementById('search-btn').onclick=doSearch;
+document.addEventListener('click',e=>{if(!e.target.closest('#search-wrap'))document.getElementById('search-drop').style.display='none'});
+
+function doSearch(){
+  const q=document.getElementById('search-input').value.trim();
+  if(!q){document.getElementById('search-drop').style.display='none';return;}
+  // Client match first
+  const matches=allPoints.filter(p=>{
+    const s=q.toLowerCase();
+    return String(p.cliente_nombre||p.clienteNombre||'').toLowerCase().includes(s)||
+           String(p.cliente_id||p.clienteId||'').toLowerCase().includes(s);
+  }).slice(0,6);
+  if(matches.length){showClientDrop(matches);return;}
+  geocode(q);
+}
+
+function showClientDrop(pts){
+  const dr=document.getElementById('search-drop');
+  dr.innerHTML=pts.map(p=>{
+    const cname=p.cliente_nombre||p.clienteNombre||p.cliente_id||p.clienteId||'';
+    const vname=p.vendedor_nombre||p.vendedorNombre||'';
+    return `<div class="sd-item" data-lat="${p.lat}" data-lng="${p.lng}">
+      <div>${cname}</div>
+      <div class="sd-zone">👤 ${vname}</div>
+      ${p.dia?`<div class="sd-day">📅 ${p.dia}</div>`:''}
+    </div>`;
+  }).join('');
+  dr.style.display='block';
+  dr.querySelectorAll('.sd-item').forEach(i=>{
+    i.onclick=()=>{map.setView([+i.dataset.lat,+i.dataset.lng],17);dr.style.display='none'};
+  });
+}
+
+async function geocode(q){
+  const dr=document.getElementById('search-drop');
+  dr.innerHTML='<div class="sd-item">Buscando...</div>';
+  dr.style.display='block';
+  try{
+    const r=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=4&countrycodes=ar`,
+      {headers:{'Accept-Language':'es'}});
+    const data=await r.json();
+    if(!data.length){dr.innerHTML='<div class="sd-item sd-nozone">No se encontró la dirección</div>';return;}
+    dr.innerHTML=data.map(d=>{
+      const lat=+d.lat,lng=+d.lon;
+      const zone=findZone(lat,lng);
+      const v=zone&&zone.vendedor_id?vendors[zone.vendedor_id]:null;
+      const label=d.display_name.split(',').slice(0,3).join(', ');
+      return `<div class="sd-item" data-lat="${lat}" data-lng="${lng}" data-name="${label}">
+        <div style="font-size:12px">${label}</div>
+        ${zone?`<div class="sd-zone">📍 ${zone.nombre||zone.vendedor_nombre}${v?' · '+v.name:''}</div>
+                ${zone.dia?`<div class="sd-day">📅 ${zone.dia}</div>`:''}`
+               :`<div class="sd-nozone">Sin zona asignada</div>`}
+      </div>`;
+    }).join('');
+    dr.querySelectorAll('.sd-item').forEach(i=>{
+      i.onclick=()=>{
+        const lat=+i.dataset.lat,lng=+i.dataset.lng;
+        map.setView([lat,lng],16);
+        const zone=findZone(lat,lng);
+        const v=zone&&zone.vendedor_id?vendors[zone.vendedor_id]:null;
+        const color=zone?vendorColors[zone.vendedor_id]||'#4f8ef7':'#888';
+        L.popup().setLatLng([lat,lng]).setContent(`
+          <div class="rpop">
+            <h3>${i.dataset.name}</h3>
+            ${zone?`
+              <div class="rr"><span class="rl">Zona</span><span class="rv">${zone.nombre||'—'}</span></div>
+              <div class="rr"><span class="rl">Vendedor</span><span class="rv">${zone.vendedor_nombre||'—'}</span></div>
+              <div class="rr"><span class="rl">Día</span><span class="rv">${zone.dia||'—'}</span></div>
+              <span class="rb" style="background:${color}">${zone.dia||'Zona'}</span>
+            `:`<p class="rno">Esta dirección no pertenece a ninguna zona definida.</p>`}
+          </div>
+        `).openOn(map);
+        dr.style.display='none';
+      };
+    });
+  }catch(e){dr.innerHTML='<div class="sd-item" style="color:#f5365c">Error de conexión</div>';}
+}
+
+function findZone(lat,lng){
+  const pt=turf.point([lng,lat]);
+  // prefer current day filter
+  const ordered=[...zones].sort((a,b)=>{
+    if(currentDay==='all') return 0;
+    return (a.dia===currentDay?-1:1)-(b.dia===currentDay?-1:1);
+  });
+  for(const z of ordered){
+    try{if(turf.booleanPointInPolygon(pt,turf.feature(z.geojson.geometry)))return z;}catch(e){}
+  }
+  return null;
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let tt;
+function showToast(msg,ok=true){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='show '+(ok?'ok':'err');
+  clearTimeout(tt);tt=setTimeout(()=>el.className='',3000);
+}
+
+// ── START ─────────────────────────────────────────────────────────────────────
+initMap();
+loadData();
+</script>
+</body>
+</html>

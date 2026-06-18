@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Territorios de Ventas</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#23273a;--border:#2e3348;
+  --text:#e8eaf6;--text2:#8b92b8;--accent:#4f8ef7;--warn:#fb6340;
+  --success:#2dce89;--danger:#f5365c;--panel:320px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+#topbar{display:flex;align-items:center;gap:10px;padding:0 14px;height:50px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;z-index:1000}
+#topbar h1{font-size:14px;font-weight:600}
+#topbar h1 span{color:var(--warn)}
+.sep{width:1px;height:22px;background:var(--border)}
+.tbtn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+.tbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn.primary:hover{opacity:.85}
+.tbtn.danger{background:rgba(245,54,92,.1);border-color:var(--danger);color:var(--danger)}
+.tbtn.danger:hover{background:rgba(245,54,92,.2)}
+.tbtn.success{background:var(--success);border-color:var(--success);color:#fff}
+.tbtn.success:hover{opacity:.85}
+
+#day-filter{display:flex;gap:3px}
+.day-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:5px 8px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .15s}
+.day-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+#main{display:flex;flex:1;overflow:hidden}
+#map{flex:1;z-index:1}
+
+#panel{width:var(--panel);background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+#panel-head{padding:12px 14px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+#panel-head h2{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+
+/* Tabs */
+.tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.tab{flex:1;padding:6px;font-size:12px;background:transparent;border:none;color:var(--text2);cursor:pointer;transition:all .15s;text-align:center}
+.tab.active{background:var(--surface2);color:var(--text)}
+
+#panel-scroll{overflow-y:auto;flex:1;padding:8px}
+#panel-scroll::-webkit-scrollbar{width:3px}
+#panel-scroll::-webkit-scrollbar-thumb{background:var(--border)}
+
+/* Vendor cards */
+.vcard{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:4px;cursor:pointer;transition:border-color .15s}
+.vcard:hover{border-color:var(--accent)}
+.vcard.active{border-color:var(--accent);background:rgba(79,142,247,.08)}
+.vcard .vh{display:flex;align-items:center;gap:7px}
+.vdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.vcard .vn{font-size:12px;font-weight:500;flex:1}
+.vcard .vc{font-size:10px;color:var(--text2);background:var(--border);padding:1px 6px;border-radius:20px}
+.vcard .vtags{display:flex;gap:3px;margin-top:5px;flex-wrap:wrap}
+.vtag{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--surface);color:var(--text2);border:1px solid var(--border)}
+.vtag.on{background:rgba(79,142,247,.15);color:var(--accent);border-color:rgba(79,142,247,.3)}
+
+/* Zone list */
+.zitem{display:flex;align-items:center;gap:7px;padding:7px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:4px}
+.zi-color{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.zi-info{flex:1;min-width:0}
+.zi-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zi-meta{font-size:10px;color:var(--text2);margin-top:1px}
+.zi-del{background:none;border:none;color:var(--text2);cursor:pointer;font-size:13px;padding:0 2px;flex-shrink:0;transition:color .15s}
+.zi-del:hover{color:var(--danger)}
+.zi-edit{background:none;border:none;color:var(--text2);cursor:pointer;font-size:12px;padding:0 2px;flex-shrink:0;transition:color .15s}
+.zi-edit:hover{color:var(--accent)}
+
+/* Upload section */
+#upload-section{padding:10px;border-top:1px solid var(--border)}
+.upload-area{border:1.5px dashed var(--border);border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:border-color .15s}
+.upload-area:hover{border-color:var(--accent)}
+.upload-area p{font-size:12px;color:var(--text2);margin-top:4px}
+.upload-area .ua-icon{font-size:22px;margin-bottom:4px}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;display:flex;align-items:center;justify-content:center;display:none}
+.modal-bg.open{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;width:360px}
+.modal-box h3{font-size:14px;font-weight:600;margin-bottom:5px}
+.modal-box p{font-size:12px;color:var(--text2);margin-bottom:14px}
+.field{margin-bottom:10px}
+.field label{font-size:11px;color:var(--text2);display:block;margin-bottom:4px}
+.field input,.field select{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:7px;font-size:13px;outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+.btn-cancel{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:7px 16px;border-radius:7px;font-size:12px;cursor:pointer}
+.btn-ok{background:var(--accent);border:none;color:#fff;padding:7px 16px;border-radius:7px;font-size:12px;cursor:pointer;font-weight:500}
+.btn-ok:hover{opacity:.85}
+
+/* Col mapper */
+#cols-modal .modal-box{width:420px}
+.col-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.col-row label{font-size:12px;width:130px;flex-shrink:0;color:var(--text2)}
+.col-row label em{color:var(--danger)}
+.col-row select{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 9px;border-radius:6px;font-size:12px;outline:none}
+
+/* Toast */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:9px;font-size:12px;z-index:9999;transition:transform .22s;pointer-events:none;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.ok{border-color:var(--success);color:var(--success)}
+#toast.err{border-color:var(--danger);color:var(--danger)}
+
+/* Export */
+#export-panel{padding:10px;border-top:1px solid var(--border)}
+#export-panel h3{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.export-info{font-size:11px;color:var(--text2);margin-bottom:8px;line-height:1.5}
+
+/* Stats */
+#stats{display:flex;gap:5px;padding:8px 10px;border-bottom:1px solid var(--border)}
+.stat{flex:1;background:var(--surface2);border-radius:6px;padding:6px 7px;text-align:center}
+.stat .sv{font-size:16px;font-weight:700;color:var(--accent)}
+.stat .sl{font-size:10px;color:var(--text2)}
+
+/* Leaflet overrides */
+.leaflet-control-zoom a,.leaflet-bar a{background:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important}
+.leaflet-control-attribution{background:rgba(15,17,23,.7)!important;color:var(--text2)!important}
+.leaflet-draw-toolbar a{background-color:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important}
+.leaflet-popup-content-wrapper{border-radius:10px}
+.leaflet-draw-tooltip{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;font-size:11px}
+
+/* Loading */
+#loading{position:fixed;inset:0;background:rgba(15,17,23,.8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;display:none}
+.spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Mode bar */
+#mode-bar{position:absolute;bottom:0;left:0;background:var(--surface);border-top:1px solid var(--border);padding:5px 12px;font-size:11px;color:var(--text2);z-index:500;display:flex;gap:12px}
+#mode-bar span{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>Admin <span>▲</span> Territorios</h1>
+  <div class="sep"></div>
+
+  <div id="day-filter">
+    <button class="day-btn active" data-day="all">Todos</button>
+    <button class="day-btn" data-day="Lunes">Lun</button>
+    <button class="day-btn" data-day="Martes">Mar</button>
+    <button class="day-btn" data-day="Miércoles">Mié</button>
+    <button class="day-btn" data-day="Jueves">Jue</button>
+    <button class="day-btn" data-day="Viernes">Vie</button>
+    <button class="day-btn" data-day="Sábado">Sáb</button>
+  </div>
+
+  <div class="sep"></div>
+  <button class="tbtn" id="btn-hull">✦ Auto-generar zonas</button>
+  <button class="tbtn primary" id="btn-export">↓ Exportar zonas.json</button>
+  <button class="tbtn" id="btn-view" onclick="window.open('../index.html','_blank')">↗ Ver vista pública</button>
+</div>
+
+<div id="main">
+  <div id="map">
+    <div id="mode-bar">
+      <span id="coord-out">—</span>
+      <span id="mode-out">Navegación</span>
+    </div>
+  </div>
+
+  <div id="panel">
+    <div id="panel-head">
+      <h2>Panel admin</h2>
+      <div class="tabs">
+        <button class="tab active" data-tab="vendors">Vendedores</button>
+        <button class="tab" data-tab="zones">Zonas (0)</button>
+        <button class="tab" data-tab="import">Datos</button>
+      </div>
+    </div>
+
+    <div id="stats">
+      <div class="stat"><div class="sv" id="s-pts">0</div><div class="sl">Puntos</div></div>
+      <div class="stat"><div class="sv" id="s-vend">0</div><div class="sl">Vendedores</div></div>
+      <div class="stat"><div class="sv" id="s-zones">0</div><div class="sl">Zonas</div></div>
+    </div>
+
+    <div id="panel-scroll">
+      <!-- vendors tab -->
+      <div id="tab-vendors"><div id="vendor-list"></div></div>
+      <!-- zones tab -->
+      <div id="tab-zones" style="display:none"><div id="zone-list"></div></div>
+      <!-- import tab -->
+      <div id="tab-import" style="display:none">
+        <div style="padding:4px 2px">
+          <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">
+            Cargá tu Excel o CSV con los puntos de venta. Se actualiza la vista pública al subir los archivos al repo.
+          </p>
+          <div class="upload-area" id="upload-area">
+            <div class="ua-icon">📂</div>
+            <div style="font-size:13px;font-weight:500">Excel o CSV</div>
+            <p>Columnas: cliente_id, cliente_nombre,<br>vendedor_id, vendedor_nombre, lat, lng, dia</p>
+          </div>
+          <input type="file" id="file-input" accept=".xlsx,.xls,.csv" style="display:none">
+          <div id="import-status" style="margin-top:8px;font-size:11px;color:var(--text2)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="export-panel">
+      <h3>Exportar para publicar</h3>
+      <div class="export-info" id="export-info">Dibujá zonas o importá datos primero.</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button class="tbtn success" id="btn-export-zonas">↓ Descargar zonas.json</button>
+        <button class="tbtn" id="btn-export-puntos" style="display:none">↓ Descargar puntos.json</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Zone modal -->
+<div class="modal-bg" id="zone-modal">
+  <div class="modal-box">
+    <h3>Configurar zona</h3>
+    <p>Asigná nombre, vendedor y día a esta zona</p>
+    <div class="field"><label>Nombre de la zona</label><input id="zm-name" type="text" placeholder="Ej: Palermo Norte — Lunes"/></div>
+    <div class="field"><label>Vendedor <em>*</em></label><select id="zm-vendor"><option value="">— seleccionar —</option></select></div>
+    <div class="field"><label>Día de visita <em>*</em></label>
+      <select id="zm-day">
+        <option value="">— seleccionar —</option>
+        <option>Lunes</option><option>Martes</option><option>Miércoles</option>
+        <option>Jueves</option><option>Viernes</option><option>Sábado</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="zm-cancel">Cancelar</button>
+      <button class="btn-ok" id="zm-ok">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Col mapper -->
+<div class="modal-bg" id="cols-modal">
+  <div class="modal-box">
+    <h3>Mapear columnas</h3>
+    <p>¿Qué columna del archivo es cada campo?</p>
+    <div id="col-rows"></div>
+    <div class="modal-actions" style="margin-top:8px">
+      <button class="btn-cancel" id="cm-cancel">Cancelar</button>
+      <button class="btn-ok" id="cm-ok">Importar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="loading"><div class="spinner"></div><p style="margin-top:10px;font-size:12px;color:var(--text2)" id="loading-msg">Procesando...</p></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+<script>
+const COLORS=['#4f8ef7','#f7614f','#4fc78e','#c74fa8','#f7c14f','#4fc7c7',
+  '#c7884f','#884fc7','#c74f4f','#4f8fc7','#7dc74f','#c7c74f','#4f4fc7',
+  '#c74f8f','#f78f4f','#4fc7a8','#8f4fc7','#4fc762','#e6a817','#17b8e6'];
+const DAYS_MAP={
+  'lunes':'Lunes','lun':'Lunes','monday':'Lunes','1':'Lunes',
+  'martes':'Martes','mar':'Martes','tuesday':'Martes','2':'Martes',
+  'miercoles':'Miércoles','miércoles':'Miércoles','mie':'Miércoles','mié':'Miércoles','wednesday':'Miércoles','3':'Miércoles',
+  'jueves':'Jueves','jue':'Jueves','thursday':'Jueves','4':'Jueves',
+  'viernes':'Viernes','vie':'Viernes','friday':'Viernes','5':'Viernes',
+  'sabado':'Sábado','sábado':'Sábado','sab':'Sábado','sáb':'Sábado','saturday':'Sábado','6':'Sábado',
+};
+const AUTO_MAP={
+  lat:['latitud','lat','latitude'],
+  lng:['longitud','lng','lon','longitude','long'],
+  vendorId:['numero_vendedor','id_vendedor','vendedor_id','cod_vendedor','num_vendedor','seller_id'],
+  vendorName:['nombre_vendedor','vendedor','nombre vendedor','seller','vendedornombre'],
+  clientId:['numero_cliente','id_cliente','cliente_id','cod_cliente','num_cliente','client_id','nro_cliente'],
+  clientName:['nombre_cliente','cliente','nombre cliente','razonsocial','razon_social','nombre'],
+  day:['dia_visita','dia','día','day','dia_de_visita','diasemana','dia_semana'],
+};
+const FIELDS=[
+  {k:'lat',l:'Latitud',r:true},{k:'lng',l:'Longitud',r:true},
+  {k:'vendorId',l:'ID Vendedor',r:true},{k:'vendorName',l:'Nombre Vendedor',r:true},
+  {k:'clientId',l:'ID Cliente',r:false},{k:'clientName',l:'Nombre Cliente',r:false},
+  {k:'day',l:'Día de visita',r:false},
+];
+
+let allPoints=[], zones=[], vendors={}, vendorColors={}, currentDay='all', activeVendor=null;
+let map, markerLayer, zoneLayer, drawnItems, pendingLayer=null;
+let rawRows=[], rawCols=[];
+
+// ── MAP ──────────────────────────────────────────────────────────────────────
+function initMap(){
+  map=L.map('map',{center:[-34.6037,-58.3816],zoom:11});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19
+  }).addTo(map);
+  zoneLayer=L.layerGroup().addTo(map);
+  markerLayer=L.layerGroup().addTo(map);
+  drawnItems=new L.FeatureGroup().addTo(map);
+
+  const dc=new L.Control.Draw({
+    position:'topleft',
+    draw:{
+      polygon:{allowIntersection:false,shapeOptions:{color:'#4f8ef7',weight:2,fillOpacity:.15}},
+      polyline:false,rectangle:false,circle:false,marker:false,circlemarker:false
+    },
+    edit:{featureGroup:drawnItems}
+  });
+  map.addControl(dc);
+
+  map.on(L.Draw.Event.CREATED, e=>{pendingLayer=e.layer; openZoneModal();});
+  map.on(L.Draw.Event.EDITED, ()=>{syncZonesFromLayers(); saveLocal();});
+  map.on(L.Draw.Event.DELETED, e=>{
+    e.layers.eachLayer(l=>{ if(l._zid) zones=zones.filter(z=>z.id!==l._zid); });
+    saveLocal(); renderZoneList(); updateStats();
+  });
+  map.on('mousemove',e=>{
+    document.getElementById('coord-out').textContent=`${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)}`;
+  });
+  map.on('draw:drawstart',()=>document.getElementById('mode-out').textContent='Dibujando polígono…');
+  map.on('draw:drawstop',()=>document.getElementById('mode-out').textContent='Navegación');
+
+  loadLocal();
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    ['vendors','zones','import'].forEach(id=>document.getElementById('tab-'+id).style.display='none');
+    document.getElementById('tab-'+t.dataset.tab).style.display='';
+  };
+});
+
+// ── FILE IMPORT ───────────────────────────────────────────────────────────────
+document.getElementById('upload-area').onclick=()=>document.getElementById('file-input').click();
+document.getElementById('file-input').onchange=e=>{
+  const file=e.target.files[0];if(!file)return;
+  showLoad('Leyendo archivo…');
+  const reader=new FileReader();
+  reader.onload=evt=>{
+    try{
+      let rows=[];
+      if(file.name.endsWith('.csv')){
+        const text=new TextDecoder('utf-8').decode(evt.target.result);
+        rows=parseCSV(text);
+      }else{
+        const wb=XLSX.read(evt.target.result,{type:'array'});
+        rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
+      }
+      if(!rows.length){hideLoad();showToast('Archivo vacío',false);return;}
+      rawCols=Object.keys(rows[0]);rawRows=rows;
+      hideLoad();openColsModal();
+    }catch(err){hideLoad();showToast('Error: '+err.message,false);}
+  };
+  reader.readAsArrayBuffer(file);
+  e.target.value='';
+};
+
+function parseCSV(text){
+  const lines=text.split(/\r?\n/).filter(l=>l.trim());
+  if(!lines.length)return[];
+  const sep=lines[0].includes(';')?';':',';
+  const h=lines[0].split(sep).map(x=>x.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).filter(l=>l.trim()).map(line=>{
+    const v=line.split(sep).map(x=>x.trim().replace(/^"|"$/g,''));
+    const o={};h.forEach((k,i)=>o[k]=v[i]||'');return o;
+  });
+}
+
+function guessCol(field,cols){
+  const m=AUTO_MAP[field]||[];
+  for(const c of cols){
+    const cl=c.toLowerCase().replace(/\s+/g,'_');
+    if(m.some(x=>cl.includes(x)||x.includes(cl)))return c;
+  }return '';
+}
+
+function openColsModal(){
+  const cont=document.getElementById('col-rows');
+  cont.innerHTML=FIELDS.map(f=>{
+    const g=guessCol(f.k,rawCols);
+    const opts=rawCols.map(c=>`<option value="${c}"${c===g?' selected':''}>${c}</option>`).join('');
+    return `<div class="col-row">
+      <label>${f.l}${f.r?'<em>*</em>':''}</label>
+      <select id="cm_${f.k}"><option value="">${f.r?'— seleccionar —':'(opcional)'}</option>${opts}</select>
+    </div>`;
+  }).join('');
+  document.getElementById('cols-modal').classList.add('open');
+}
+
+document.getElementById('cm-cancel').onclick=()=>document.getElementById('cols-modal').classList.remove('open');
+document.getElementById('cm-ok').onclick=()=>{
+  const m={};let ok=true;
+  FIELDS.forEach(f=>{
+    const v=document.getElementById('cm_'+f.k).value;
+    if(f.r&&!v){ok=false;showToast(f.l+' es requerido',false);}
+    m[f.k]=v;
+  });
+  if(!ok)return;
+  document.getElementById('cols-modal').classList.remove('open');
+  showLoad('Procesando puntos…');
+  setTimeout(()=>{importData(rawRows,m);hideLoad();},50);
+};
+
+function importData(rows,m){
+  const pts=[],vm={};let ci=0;
+  rows.forEach((row,i)=>{
+    const lat=parseFloat(String(row[m.lat]||'').replace(',','.'));
+    const lng=parseFloat(String(row[m.lng]||'').replace(',','.'));
+    if(isNaN(lat)||isNaN(lng))return;
+    const vid=String(row[m.vendorId]||'').trim()||'X';
+    const vname=String(row[m.vendorName]||'').trim()||vid;
+    if(!vm[vid]){vm[vid]={id:vid,name:vname,count:0,days:new Set()};vendorColors[vid]=COLORS[ci++%COLORS.length];}
+    vm[vid].count++;
+    let day='';
+    if(m.day&&row[m.day]){
+      const raw=String(row[m.day]).trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      day=DAYS_MAP[raw]||String(row[m.day]).trim();
+    }
+    if(day)vm[vid].days.add(day);
+    pts.push({
+      lat,lng,vendedor_id:vid,vendedor_nombre:vname,
+      cliente_id:m.clientId?String(row[m.clientId]||''):String(i+1),
+      cliente_nombre:m.clientName?String(row[m.clientName]||''):'',
+      dia:day
+    });
+  });
+  vendors=vm;allPoints=pts;
+  renderMarkers(pts);renderVendorList();updateStats();populateVendorSelect();
+  if(pts.length){
+    const lats=pts.map(p=>p.lat),lngs=pts.map(p=>p.lng);
+    map.fitBounds([[Math.min(...lats),Math.min(...lngs)],[Math.max(...lats),Math.max(...lngs)]],{padding:[30,30]});
+  }
+  document.getElementById('import-status').textContent=`✓ ${pts.length.toLocaleString()} puntos, ${Object.keys(vm).length} vendedores`;
+  document.getElementById('btn-export-puntos').style.display='';
+  updateExportInfo();
+  showToast(`${pts.length.toLocaleString()} puntos importados`,true);
+}
+
+// ── MARKERS ───────────────────────────────────────────────────────────────────
+function renderMarkers(pts){
+  markerLayer.clearLayers();
+  pts.forEach(p=>{
+    if(currentDay!=='all'&&p.dia&&p.dia!==currentDay)return;
+    if(activeVendor&&p.vendedor_id!==activeVendor)return;
+    const color=vendorColors[p.vendedor_id]||'#aaa';
+    const icon=L.divIcon({className:'',
+      html:`<div style="width:6px;height:6px;border-radius:50%;background:${color};border:1px solid rgba(255,255,255,.5)"></div>`,
+      iconSize:[6,6],iconAnchor:[3,3]});
+    L.marker([p.lat,p.lng],{icon}).addTo(markerLayer);
+  });
+}
+
+// ── ZONES ─────────────────────────────────────────────────────────────────────
+function renderZones(){
+  zoneLayer.clearLayers();
+  drawnItems.clearLayers();
+  zones.forEach(z=>{
+    if(currentDay!=='all'&&z.dia&&z.dia!==currentDay)return;
+    if(activeVendor&&z.vendedor_id!==activeVendor)return;
+    const color=vendorColors[z.vendedor_id]||'#4f8ef7';
+    try{
+      const layer=L.geoJSON(z.geojson,{style:{color,fillColor:color,weight:2,opacity:.9,fillOpacity:.18}}).getLayers()[0];
+      if(layer){layer._zid=z.id;drawnItems.addLayer(layer);}
+    }catch(e){}
+  });
+}
+
+function syncZonesFromLayers(){
+  drawnItems.eachLayer(l=>{
+    if(l._zid){const z=zones.find(x=>x.id===l._zid);if(z)z.geojson=l.toGeoJSON();}
+  });
+}
+
+function renderZoneList(){
+  const el=document.getElementById('zone-list');
+  document.querySelector('[data-tab="zones"]').textContent=`Zonas (${zones.length})`;
+  if(!zones.length){el.innerHTML='<p style="font-size:12px;color:var(--text2);padding:4px">Sin zonas aún. Usá la herramienta de polígono en el mapa.</p>';return;}
+  el.innerHTML=zones.map(z=>{
+    const color=vendorColors[z.vendedor_id]||'#4f8ef7';
+    return `<div class="zitem">
+      <div class="zi-color" style="background:${color}"></div>
+      <div class="zi-info">
+        <div class="zi-name">${z.nombre}</div>
+        <div class="zi-meta">${z.vendedor_nombre||z.vendedor_id} · ${z.dia||'sin día'}</div>
+      </div>
+      <button class="zi-edit" data-id="${z.id}" title="Editar">✎</button>
+      <button class="zi-del" data-id="${z.id}" title="Eliminar">✕</button>
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.zi-del').forEach(b=>{
+    b.onclick=()=>{
+      const id=parseInt(b.dataset.id);
+      drawnItems.eachLayer(l=>{if(l._zid===id)drawnItems.removeLayer(l);});
+      zones=zones.filter(z=>z.id!==id);
+      saveLocal();renderZoneList();updateStats();
+    };
+  });
+  el.querySelectorAll('.zi-edit').forEach(b=>{
+    b.onclick=()=>{
+      const z=zones.find(x=>x.id===parseInt(b.dataset.id));if(!z)return;
+      pendingLayer=null;
+      document.getElementById('zm-name').value=z.nombre;
+      document.getElementById('zm-vendor').value=z.vendedor_id;
+      document.getElementById('zm-day').value=z.dia;
+      document.getElementById('zone-modal').classList.add('open');
+      document.getElementById('zm-ok').dataset.editId=z.id;
+    };
+  });
+}
+
+// ── ZONE MODAL ────────────────────────────────────────────────────────────────
+function openZoneModal(){
+  document.getElementById('zm-name').value='';
+  document.getElementById('zm-day').value='';
+  document.getElementById('zm-vendor').value='';
+  document.getElementById('zm-ok').dataset.editId='';
+  populateVendorSelect();
+  document.getElementById('zone-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('zm-name').focus(),100);
+}
+
+function populateVendorSelect(){
+  const sel=document.getElementById('zm-vendor');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— seleccionar —</option>';
+  Object.values(vendors).sort((a,b)=>a.name.localeCompare(b.name)).forEach(v=>{
+    const o=document.createElement('option');
+    o.value=v.id;o.textContent=`${v.id} — ${v.name}`;
+    if(v.id===cur)o.selected=true;
+    sel.appendChild(o);
+  });
+}
+
+document.getElementById('zm-cancel').onclick=()=>{
+  pendingLayer=null;
+  document.getElementById('zone-modal').classList.remove('open');
+};
+
+document.getElementById('zm-ok').onclick=()=>{
+  const name=document.getElementById('zm-name').value.trim();
+  const vid=document.getElementById('zm-vendor').value;
+  const day=document.getElementById('zm-day').value;
+  if(!vid){showToast('Seleccioná un vendedor',false);return;}
+  if(!day){showToast('Seleccioná un día',false);return;}
+
+  const editId=parseInt(document.getElementById('zm-ok').dataset.editId)||0;
+  if(editId){
+    const z=zones.find(x=>x.id===editId);
+    if(z){z.nombre=name||`${vid} — ${day}`;z.vendedor_id=vid;z.vendedor_nombre=vendors[vid]?.name||vid;z.dia=day;}
+  }else if(pendingLayer){
+    const color=vendorColors[vid]||COLORS[zones.length%COLORS.length];
+    pendingLayer.setStyle({color,fillColor:color,weight:2,fillOpacity:.18});
+    drawnItems.addLayer(pendingLayer);
+    const z={id:Date.now(),nombre:name||`${vid} — ${day}`,
+      vendedor_id:vid,vendedor_nombre:vendors[vid]?.name||vid,dia:day,
+      geojson:pendingLayer.toGeoJSON()};
+    pendingLayer._zid=z.id;zones.push(z);pendingLayer=null;
+  }
+  document.getElementById('zone-modal').classList.remove('open');
+  saveLocal();renderZoneList();renderZones();updateStats();updateExportInfo();
+  showToast('Zona guardada',true);
+};
+document.getElementById('zm-name').onkeydown=e=>{if(e.key==='Enter')document.getElementById('zm-ok').click();};
+
+// ── AUTO-GENERATE HULL ────────────────────────────────────────────────────────
+document.getElementById('btn-hull').onclick=()=>{
+  if(!allPoints.length){showToast('Importá datos primero',false);return;}
+  if(!confirm(`Generar polígonos automáticos (convex hull) por vendedor+día.\nSe agregarán a las zonas existentes. ¿Continuar?`))return;
+
+  const grouped={};
+  allPoints.forEach(p=>{
+    const key=`${p.vendedor_id}__${p.dia||'sin_dia'}`;
+    if(!grouped[key])grouped[key]={vendedor_id:p.vendedor_id,vendedor_nombre:p.vendedor_nombre,dia:p.dia,pts:[]};
+    grouped[key].pts.push([p.lng,p.lat]);
+  });
+
+  let added=0;
+  Object.values(grouped).forEach(g=>{
+    if(g.pts.length<3)return;
+    try{
+      const fc=turf.featureCollection(g.pts.map(c=>turf.point(c)));
+      const hull=turf.convex(fc);
+      if(!hull)return;
+      const color=vendorColors[g.vendedor_id]||'#4f8ef7';
+      const layer=L.geoJSON(hull,{style:{color,fillColor:color,weight:2,fillOpacity:.12}}).getLayers()[0];
+      if(!layer)return;
+      const z={id:Date.now()+added,
+        nombre:`${g.vendedor_nombre||g.vendedor_id} — ${g.dia||'sin día'}`,
+        vendedor_id:g.vendedor_id,vendedor_nombre:g.vendedor_nombre||g.vendedor_id,
+        dia:g.dia,geojson:hull};
+      layer._zid=z.id;drawnItems.addLayer(layer);zones.push(z);added++;
+    }catch(e){}
+  });
+  saveLocal();renderZoneList();renderZones();updateStats();updateExportInfo();
+  showToast(`${added} zonas generadas automáticamente`,true);
+};
+
+// ── DAY FILTER ────────────────────────────────────────────────────────────────
+document.querySelectorAll('.day-btn').forEach(b=>{
+  b.onclick=()=>{
+    currentDay=b.dataset.day;
+    document.querySelectorAll('.day-btn').forEach(x=>x.classList.toggle('active',x===b));
+    renderMarkers(allPoints);renderZones();
+  };
+});
+
+// ── VENDOR LIST ───────────────────────────────────────────────────────────────
+function renderVendorList(){
+  const el=document.getElementById('vendor-list');
+  const sorted=Object.values(vendors).sort((a,b)=>b.count-a.count);
+  if(!sorted.length){el.innerHTML='<p style="font-size:12px;color:var(--text2);padding:4px">Sin vendedores. Importá datos primero.</p>';return;}
+  el.innerHTML=sorted.map(v=>{
+    const color=vendorColors[v.id]||'#aaa';
+    const days=[...v.days].sort();
+    return `<div class="vcard${activeVendor===v.id?' active':''}" data-vid="${v.id}">
+      <div class="vh"><div class="vdot" style="background:${color}"></div>
+        <div class="vn">${v.name}</div><div class="vc">${v.count.toLocaleString('es-AR')}</div></div>
+      ${days.length?`<div class="vtags">${days.map(d=>`<span class="vtag${d===currentDay||currentDay==='all'?' on':''}">${d}</span>`).join('')}</div>`:''}
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.vcard').forEach(c=>{
+    c.onclick=()=>{
+      const vid=c.dataset.vid;
+      activeVendor=activeVendor===vid?null:vid;
+      renderVendorList();renderMarkers(allPoints);renderZones();
+    };
+  });
+}
+
+// ── STATS ─────────────────────────────────────────────────────────────────────
+function updateStats(){
+  document.getElementById('s-pts').textContent=allPoints.length.toLocaleString('es-AR');
+  document.getElementById('s-vend').textContent=Object.keys(vendors).length;
+  document.getElementById('s-zones').textContent=zones.length;
+}
+function updateExportInfo(){
+  document.getElementById('export-info').textContent=
+    `${zones.length} zonas listas para publicar. Descargá zonas.json y subilo a data/ en el repo.`;
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+document.getElementById('btn-export-zonas').onclick=exportZonas;
+document.getElementById('btn-export').onclick=exportZonas;
+function exportZonas(){
+  if(!zones.length){showToast('Sin zonas para exportar',false);return;}
+  syncZonesFromLayers();
+  const blob=new Blob([JSON.stringify(zones,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='zonas.json';a.click();
+  showToast('zonas.json descargado',true);
+}
+document.getElementById('btn-export-puntos').onclick=()=>{
+  if(!allPoints.length){showToast('Sin puntos',false);return;}
+  const blob=new Blob([JSON.stringify(allPoints,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='puntos.json';a.click();
+  showToast('puntos.json descargado',true);
+};
+
+// ── LOCAL STORAGE ─────────────────────────────────────────────────────────────
+function saveLocal(){
+  try{localStorage.setItem('admin_zones',JSON.stringify(zones));}catch(e){}
+}
+function loadLocal(){
+  try{
+    const raw=localStorage.getItem('admin_zones');
+    if(!raw)return;
+    zones=JSON.parse(raw);
+    zones.forEach(z=>{
+      if(!vendorColors[z.vendedor_id])vendorColors[z.vendedor_id]=COLORS[Object.keys(vendorColors).length%COLORS.length];
+    });
+    renderZoneList();renderZones();updateStats();updateExportInfo();
+  }catch(e){}
+}
+
+// ── TOAST / LOAD ──────────────────────────────────────────────────────────────
+let tt;
+function showToast(msg,ok=true){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='show '+(ok?'ok':'err');
+  clearTimeout(tt);tt=setTimeout(()=>el.className='',3000);
+}
+function showLoad(msg){document.getElementById('loading-msg').textContent=msg;document.getElementById('loading').style.display='flex';}
+function hideLoad(){document.getElementById('loading').style.display='none';}
+
+initMap();
+</script>
+</body>
+</html>
