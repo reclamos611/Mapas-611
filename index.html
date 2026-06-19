@@ -388,7 +388,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
   <div id="panel">
     <div id="panel-head">
-      <h2>Vendedores</h2>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <h2 style="margin:0">Vendedores</h2>
+        <div style="display:flex;gap:5px">
+          <button id="btn-sel-all" style="background:rgba(232,48,74,.12);border:1px solid rgba(232,48,74,.3);color:var(--accent);padding:3px 9px;border-radius:5px;font-size:11px;cursor:pointer">Todos</button>
+          <button id="btn-sel-none" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:3px 9px;border-radius:5px;font-size:11px;cursor:pointer">Ninguno</button>
+        </div>
+      </div>
       <div id="stats">
         <div class="stat"><div class="sv" id="s-pts">—</div><div class="sl">Clientes</div></div>
         <div class="stat"><div class="sv" id="s-vend">—</div><div class="sl">Vendedores</div></div>
@@ -417,7 +423,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script>
 const DAYS_NUM = {0:'Domingo',1:'Lunes',2:'Martes',3:'Miércoles',4:'Jueves',5:'Viernes',6:'Sábado'};
 
-let allPoints=[], zones=[], vendors={}, vendorColors={}, currentDay='all', activeVendor=null;
+let allPoints=[], zones=[], vendors={}, vendorColors={}, currentDay='all', activeVendors=new Set();
 let map, markerLayer, zoneLayer;
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
@@ -509,7 +515,7 @@ function renderZones(){
   zoneLayer.clearLayers();
   zones.forEach(z=>{
     if(currentDay!=='all' && z.dia && z.dia!==currentDay) return;
-    if(activeVendor && z.vendedor_id!==activeVendor) return;
+    if(activeVendors.size>0 && !activeVendors.has(z.vendedor_id)) return;
     const color = vendorColors[z.vendedor_id]||'#4f8ef7';
     try{
       const layer = L.geoJSON(z.geojson,{
@@ -593,7 +599,7 @@ function renderMarkers(pts){
   const bulk=[];
   pts.forEach(p=>{
     if(currentDay!=='all' && p.dia && p.dia!==currentDay) return;
-    if(activeVendor && String(p.vendedor_id||p.vendedorId)!==activeVendor) return;
+    if(activeVendors.size>0 && !activeVendors.has(String(p.vendedor_id||p.vendedorId))) return;
     const vid=String(p.vendedor_id||p.vendedorId||'');
     const color=vendorColors[vid]||'#aaa';
     const icon=makeIcon(vid, color);
@@ -634,7 +640,7 @@ function renderVendorList(){
     const shapeIdx=getVendorShape(v.id);
     const shapeNames=['●','■','▲','◆','★','⬠','⬡','✛','▼','▪'];
     const shape=shapeNames[shapeIdx]||'●';
-    return `<div class="vcard${activeVendor===v.id?' active':''}" data-vid="${v.id}">
+    return `<div class="vcard${activeVendors.has(v.id)?' active':''}" data-vid="${v.id}">
       <div class="vh">
         <span style="font-size:14px;color:${color};flex-shrink:0;width:18px;text-align:center">${shape}</span>
         <div class="vn">${v.name}</div>
@@ -648,13 +654,14 @@ function renderVendorList(){
     c.onclick=e=>{
       if(e.target.classList.contains('vtag')) return;
       const vid=c.dataset.vid;
-      activeVendor=activeVendor===vid?null:vid;
+      if(activeVendors.has(vid)) activeVendors.delete(vid);
+      else activeVendors.add(vid);
       renderVendorList(); renderZones();
-      if(activeVendor){
+      if(activeVendors.size>0){
         document.getElementById('vendor-hint').style.display='none';
         renderMarkers(allPoints);
-        // zoom to vendor points
-        const vpts=allPoints.filter(p=>String(p.vendedor_id)===activeVendor&&(currentDay==='all'||!p.dia||p.dia===currentDay));
+        // zoom to fit all selected vendors
+        const vpts=allPoints.filter(p=>activeVendors.has(String(p.vendedor_id))&&(currentDay==='all'||!p.dia||p.dia===currentDay));
         if(vpts.length){
           const lats=vpts.map(p=>p.lat),lngs=vpts.map(p=>p.lng);
           map.fitBounds([[Math.min(...lats),Math.min(...lngs)],[Math.max(...lats),Math.max(...lngs)]],{padding:[40,40],maxZoom:14});
@@ -670,6 +677,21 @@ function renderVendorList(){
   });
 }
 
+// ── SELECT ALL / NONE ────────────────────────────────────────────────────────
+document.addEventListener('click', e=>{
+  if(e.target.id==='btn-sel-all'){
+    Object.keys(vendors).forEach(vid=>activeVendors.add(vid));
+    document.getElementById('vendor-hint').style.display='none';
+    renderVendorList(); renderZones(); renderMarkers(allPoints);
+  }
+  if(e.target.id==='btn-sel-none'){
+    activeVendors.clear();
+    markerLayer.clearLayers();
+    document.getElementById('vendor-hint').style.display='block';
+    renderVendorList(); renderZones();
+  }
+});
+
 // ── DAY FILTER ────────────────────────────────────────────────────────────────
 function setDay(day){
   currentDay=day;
@@ -677,7 +699,7 @@ function setDay(day){
     b.classList.toggle('active',b.dataset.day===day||(day==='all'&&b.dataset.day==='all'));
   });
   document.getElementById('day-ind-text').textContent=day==='all'?'Todos':day;
-  if(activeVendor) renderMarkers(allPoints);
+  if(activeVendors.size>0) renderMarkers(allPoints);
   renderZones(); renderVendorList();
   document.getElementById('s-pts').textContent=
     (day==='all'?allPoints:allPoints.filter(p=>!p.dia||p.dia===day)).length.toLocaleString('es-AR');
@@ -818,21 +840,34 @@ async function geocode(q){
         const zone=findZone(lat,lng);
         const v=zone&&zone.vendedor_id?vendors[zone.vendedor_id]:null;
         const color=zone?vendorColors[zone.vendedor_id]||'#4f8ef7':'#888';
+        const nr=findNearest(lat,lng);
+        const vendedor_=(zone?zone.vendedor_nombre:nr?nr.vendedor_nombre:'—');
+        const dia_=(zone?zone.dia:nr?nr.dia:'—');
+        const zona_=(zone?zone.nombre:'Sin zona');
+        const wapp_=encodeURIComponent(`📍 *${i.dataset.name}*
+Zona: ${zona_}
+Vendedor: ${vendedor_}
+Día de visita: ${dia_}
+Maps: https://maps.google.com/?q=${lat},${lng}`);
         L.popup().setLatLng([lat,lng]).setContent(`
           <div class="rpop">
-            <h3>${i.dataset.name}</h3>
+            <h3 style="font-size:12px">${i.dataset.name}</h3>
             ${zone?`
               <div class="rr"><span class="rl">Zona</span><span class="rv">${zone.nombre||'—'}</span></div>
               <div class="rr"><span class="rl">Vendedor</span><span class="rv">${zone.vendedor_nombre||'—'}</span></div>
               <div class="rr"><span class="rl">Día</span><span class="rv">${zone.dia||'—'}</span></div>
               <span class="rb" style="background:${color}">${zone.dia||'Zona'}</span>
-                        `:(()=>{const nr=findNearest(lat,lng);return nr?`
-              <div class="rr" style="color:#fb6340"><span class="rl">⚠️ Sin zona</span></div>
+            `:nr?`
+              <div class="rr"><span class="rl" style="color:#fb6340">⚠️ Sin zona</span></div>
               <div class="rr"><span class="rl">Vendedor más cercano</span><span class="rv" style="color:#fb6340">${nr.vendedor_nombre}</span></div>
-              <div class="rr"><span class="rl">Días de visita</span><span class="rv">${nr.dia||'—'}</span></div>
+              <div class="rr"><span class="rl">Día de visita</span><span class="rv">${nr.dia||'—'}</span></div>
               <div class="rr"><span class="rl">Distancia</span><span class="rv">${nr.distKm} km</span></div>
               <span class="rb" style="background:#fb6340">Zona no definida</span>
-            `:`<p class="rno">Sin zona y sin datos de vendedores cargados.</p>`})()}
+            `:`<p class="rno">Sin datos cargados.</p>`}
+            <a href="https://wa.me/?text=${wapp_}" target="_blank"
+              style="display:block;text-align:center;background:#25D366;color:#fff;padding:8px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;margin-top:10px">
+              Compartir por WhatsApp 📤
+            </a>
           </div>
         `).openOn(map);
         dr.style.display='none';
@@ -855,22 +890,32 @@ function findZone(lat,lng){
 
 function findNearest(lat,lng){
   if(!allPoints.length) return null;
-  const pool = currentDay==='all' ? allPoints : allPoints.filter(p=>!p.dia||p.dia===currentDay);
+  // Use all points regardless of day filter for nearest search
+  // but prefer current day if active
+  const pool = allPoints;
   if(!pool.length) return null;
-  let best=null, bestDist=Infinity;
-  for(const p of pool){
+
+  // Find top 20 nearest, then pick best by day preference
+  const scored = pool.map(p=>{
     const dlat=p.lat-lat, dlng=p.lng-lng;
-    const d=dlat*dlat+dlng*dlng;
-    if(d<bestDist){bestDist=d;best=p;}
+    return {p, d: dlat*dlat + dlng*dlng};
+  }).sort((a,b)=>a.d-b.d).slice(0,20);
+
+  // Prefer current day match if filter active
+  let best = null;
+  if(currentDay!=='all'){
+    best = scored.find(s=>s.p.dia===currentDay);
   }
+  if(!best) best = scored[0];
   if(!best) return null;
-  // dia del punto más cercano (no todos los días del vendedor)
+
+  const distKm = Math.round(Math.sqrt(best.d)*111*10)/10;
   return {
-    vendedor_id: best.vendedor_id,
-    vendedor_nombre: best.vendedor_nombre,
-    dia: best.dia||'—',
-    distKm: Math.round(Math.sqrt(bestDist)*111*10)/10,
-    cliente_cercano: best.cliente_nombre||best.cliente_id
+    vendedor_id: best.p.vendedor_id,
+    vendedor_nombre: best.p.vendedor_nombre,
+    dia: best.p.dia||'—',
+    distKm,
+    cliente_cercano: best.p.cliente_nombre||best.p.cliente_id
   };
 }
 
