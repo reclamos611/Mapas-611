@@ -480,6 +480,36 @@ function initMap(){
 }
 
 // ── LOAD DATA ─────────────────────────────────────────────────────────────────
+function registerMapEvents(){
+  // Desktop: doble click
+  map.on('dblclick', e=>{
+    e.originalEvent.preventDefault();
+    handleMapPoint(e.latlng.lat, e.latlng.lng);
+  });
+
+  // Mobile: press largo (600ms) + right click
+  map.on('contextmenu', e=>{ handleMapPoint(e.latlng.lat, e.latlng.lng); });
+
+  map.getContainer().addEventListener('touchstart', e=>{
+    if(e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    longPressTimer = setTimeout(()=>{
+      const rect = map.getContainer().getBoundingClientRect();
+      const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
+      const latlng = map.containerPointToLatLng(point);
+      handleMapPoint(latlng.lat, latlng.lng);
+    }, 600);
+  },{passive:true});
+
+  map.getContainer().addEventListener('touchend', ()=>{
+    clearTimeout(longPressTimer); longPressTimer=null;
+  },{passive:true});
+
+  map.getContainer().addEventListener('touchmove', ()=>{
+    clearTimeout(longPressTimer); longPressTimer=null;
+  },{passive:true});
+}
+
 async function loadData(){
   return new Promise(async (resolve)=>{
   try{
@@ -1267,35 +1297,11 @@ function handleMapPoint(lat, lng){
   showNearbyPoints(lat, lng);
 }
 
-// Desktop: doble click
-map.on('dblclick', e=>{
-  e.originalEvent.preventDefault();
-  handleMapPoint(e.latlng.lat, e.latlng.lng);
-});
-
-// Mobile: press largo (600ms)
-map.on('contextmenu', e=>{ handleMapPoint(e.latlng.lat, e.latlng.lng); });
-
-map.getContainer().addEventListener('touchstart', e=>{
-  if(e.touches.length !== 1) return;
-  const touch = e.touches[0];
-  longPressTimer = setTimeout(()=>{
-    const rect = map.getContainer().getBoundingClientRect();
-    const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
-    const latlng = map.containerPointToLatLng(point);
-    handleMapPoint(latlng.lat, latlng.lng);
-  }, 600);
-},{passive:true});
-
-map.getContainer().addEventListener('touchend', ()=>{
-  clearTimeout(longPressTimer); longPressTimer=null;
-},{passive:true});
-map.getContainer().addEventListener('touchmove', ()=>{
-  clearTimeout(longPressTimer); longPressTimer=null;
-},{passive:true});
+// map events registered in initMap
 
 // ── START ─────────────────────────────────────────────────────────────────────
 initMap();
+registerMapEvents();
 loadData().then(tryAutoLocation);
 </script>
 </body>
