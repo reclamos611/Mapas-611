@@ -1204,6 +1204,96 @@ Maps: https://maps.google.com/?q=${p.lat},${p.lng}`);
   showToast(`${nearby.length} puntos cercanos encontrados`,true);
 }
 
+
+// ── TAP LARGO / DOBLE CLICK EN MAPA ──────────────────────────────────────────
+let longPressTimer = null;
+let tapMarker = null;
+
+function handleMapPoint(lat, lng){
+  // Remove previous tap marker
+  if(tapMarker){ map.removeLayer(tapMarker); tapMarker=null; }
+
+  const zone = findZone(lat, lng);
+  const nr = !zone ? findNearest(lat, lng) : null;
+  const vendedor = zone ? zone.vendedor_nombre : nr ? nr.vendedor_nombre : '—';
+  const dia      = zone ? zone.dia            : nr ? nr.dia             : '—';
+  const zonaNombre = zone ? zone.nombre : 'Sin zona definida';
+  const color    = zone ? vendorColors[zone.vendedor_id]||'#e8304a' : nr ? vendorColors[nr.vendedor_id]||'#fb6340' : '#888';
+  const esZona   = !!zone;
+
+  const wapp = encodeURIComponent(
+    `📍 *Punto marcado en el mapa*
+`+
+    `Zona: ${zonaNombre}
+`+
+    `Vendedor: ${vendedor}
+`+
+    `Día de visita: ${dia}
+`+
+    `Maps: https://maps.google.com/?q=${lat.toFixed(6)},${lng.toFixed(6)}`
+  );
+
+  // Pulsing marker
+  const icon = L.divIcon({
+    className:'',
+    html:`<div style="position:relative;width:22px;height:22px">
+      <div style="position:absolute;inset:-6px;border-radius:50%;border:2px solid ${color};opacity:.4;animation:pulse 1.2s infinite"></div>
+      <div style="position:absolute;inset:0;border-radius:50%;background:${color};border:3px solid #fff;box-shadow:0 0 10px ${color}"></div>
+    </div>`,
+    iconSize:[22,22], iconAnchor:[11,11], popupAnchor:[0,-14]
+  });
+
+  tapMarker = L.marker([lat,lng],{icon,zIndexOffset:2000}).addTo(map);
+  tapMarker.bindPopup(`
+    <div style="min-width:200px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+        <div style="width:10px;height:10px;border-radius:50%;background:${color};flex-shrink:0"></div>
+        <p style="font-weight:700;font-size:13px">${esZona?zone.nombre:'Sin zona asignada'}</p>
+      </div>
+      <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;margin-bottom:8px">
+        <p style="font-size:12px;font-weight:600;color:#333">👤 ${vendedor}</p>
+        <p style="font-size:12px;color:#555;margin-top:3px">📅 ${dia}</p>
+        ${!esZona&&nr?`<p style="font-size:11px;color:#fb6340;margin-top:3px">⚠️ Sin zona · ${nr.distKm} km al punto más cercano</p>`:''}
+        <p style="font-size:10px;color:#aaa;margin-top:4px;font-family:monospace">${lat.toFixed(5)}, ${lng.toFixed(5)}</p>
+      </div>
+      <a href="https://wa.me/?text=${wapp}" target="_blank"
+        style="display:block;text-align:center;background:#25D366;color:#fff;padding:9px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none">
+        Compartir por WhatsApp 📤
+      </a>
+    </div>
+  `,{maxWidth:240}).openPopup();
+
+  // Also show nearby points
+  showNearbyPoints(lat, lng);
+}
+
+// Desktop: doble click
+map.on('dblclick', e=>{
+  e.originalEvent.preventDefault();
+  handleMapPoint(e.latlng.lat, e.latlng.lng);
+});
+
+// Mobile: press largo (600ms)
+map.on('contextmenu', e=>{ handleMapPoint(e.latlng.lat, e.latlng.lng); });
+
+map.getContainer().addEventListener('touchstart', e=>{
+  if(e.touches.length !== 1) return;
+  const touch = e.touches[0];
+  longPressTimer = setTimeout(()=>{
+    const rect = map.getContainer().getBoundingClientRect();
+    const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
+    const latlng = map.containerPointToLatLng(point);
+    handleMapPoint(latlng.lat, latlng.lng);
+  }, 600);
+},{passive:true});
+
+map.getContainer().addEventListener('touchend', ()=>{
+  clearTimeout(longPressTimer); longPressTimer=null;
+},{passive:true});
+map.getContainer().addEventListener('touchmove', ()=>{
+  clearTimeout(longPressTimer); longPressTimer=null;
+},{passive:true});
+
 // ── START ─────────────────────────────────────────────────────────────────────
 initMap();
 loadData().then(tryAutoLocation);
